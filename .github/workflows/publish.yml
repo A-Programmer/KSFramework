@@ -18,7 +18,7 @@ jobs:
       # Publish
       - name: publish on version change
         id: publish_nuget
-        uses: rohith/publish-nuget@v2
+        uses: actions/setup-dotnet@v1
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: src/KSFramework.csproj
@@ -33,7 +33,7 @@ jobs:
           PACKAGE_NAME: KSFramework
           
           # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
-          VERSION_FILE_PATH: Directory.Build.props
+          # VERSION_FILE_PATH: Directory.Build.props
 
           # Regex pattern to extract version info in a capturing group
           VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
