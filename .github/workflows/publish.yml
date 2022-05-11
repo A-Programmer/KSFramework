@@ -18,7 +18,7 @@ jobs:
       # Publish
       - name: publish on version change
         id: publish_nuget
-        uses: rohith/publish-nuget@v2
+        uses: Rebel028/publish-nuget@v2.7.0
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: src/KSFramework.csproj
@@ -51,7 +51,7 @@ jobs:
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
           # NuGet server uri hosting the packages, defaults to https://api.nuget.org
-          # NUGET_SOURCE: https://api.nuget.org
+          NUGET_SOURCE: https://api.nuget.org
 
           # Flag to toggle pushing symbols along with nuget package to the server, disabled by default
-          # INCLUDE_SYMBOLS: false
+          INCLUDE_SYMBOLS: false
