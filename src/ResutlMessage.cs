@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace KSFramework
 {
     public class ResultMessage
-    {
+    { 
         public bool IsSuccess { get; set; }
         public Status Status { get; set; }
         public string Message { get; set; }
