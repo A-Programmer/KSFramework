@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>KSFramework</PackageId>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Authors>Kamran Sadin</Authors>
     <Company>Sadin</Company>
     <CopyRight>Copyright (c) 2022 SadinCo.</CopyRight>
@@ -19,12 +19,15 @@
     <PackageTags>Sadin,Kamran,utility,dotnet,tools</PackageTags>
     <Title>KS Framework</Title>
     <Description>A tool for .NET projects contain utilities for working with string, numbers, date time, and also helpers and base classes for Clean Architecture and DDD projects</Description>
+    <ReleaseNotes>New custom middleware for logging added.</ReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Pluralize.NET" Version="1.0.2" />
