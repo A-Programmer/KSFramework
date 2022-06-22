@@ -9,11 +9,11 @@ namespace KSFramework
         public Status Status { get; set; }
         public string Message { get; set; }
 
-
-        public ResultMessage()
+        protected ResultMessage()
         {
 
         }
+
         public ResultMessage(bool isSuccess, Status status, string message)
         {
             IsSuccess = isSuccess;
@@ -24,6 +24,10 @@ namespace KSFramework
 
     public class ResultMessage<TData> : ResultMessage
     {
+        public ResultMessage()
+        {
+
+        }
         public ResultMessage(bool isSuccess, TData data, Status status, string message) : base(isSuccess, status, message)
         {
             Data = data;
