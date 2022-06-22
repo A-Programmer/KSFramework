@@ -24,7 +24,9 @@ namespace KSFramework
 
     public class ResultMessage<TData> : ResultMessage
     {
-
+        public ResutlMessage()
+        {
+        }
         public ResultMessage(bool isSuccess, TData data, Status status, string message) : base(isSuccess, status, message)
         {
             Data = data;
