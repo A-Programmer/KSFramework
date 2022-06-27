@@ -8,8 +8,8 @@ namespace KSFramework.TagHelpers
     public class CheckMarkTagHelper : TagHelper
     {
         private const string CheckMarkValueAttributeName = "ks-checkmark-value";
-        private const string CheckMarkTrueTextValueAttributeName = "ks-checkmark-true-text";
-        private const string CheckMarkFalseValueAttributeName = "ks-checkmark-false-text";
+        private const string CheckMarkTrueTextValueAttributeName = "ks-checkmark-true-value";
+        private const string CheckMarkFalseValueAttributeName = "ks-checkmark-false-value";
         private const string CheckMarkTrueCssAttributeName = "ks-checkmark-true-css-value";
         private const string CheckMarkFalseCssAttributeName = "ks-checkmark-false-css-value";
 
@@ -36,12 +36,12 @@ namespace KSFramework.TagHelpers
             if (CheckMarkValue)
             {
                 classValue = CheckMarkTrueCssValue;
-                textValue = CheckMarkTrueTextValue ?? "True";
+                textValue = CheckMarkTrueTextValue ?? "";
             }
             else
             {
                 classValue = CheckMarkFalseCssValue;
-                textValue = CheckMarkFalseTextValue ?? "False";
+                textValue = CheckMarkFalseTextValue ?? "";
             }
 
             output.Attributes.SetAttribute("class", classValue);
