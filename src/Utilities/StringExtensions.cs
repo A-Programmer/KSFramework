@@ -227,5 +227,10 @@ namespace KSFramework.Utilities
         {
             return str?.Length == 0 ? null : str;
         }
+
+        public static string HtmlToPlainText(this string str)
+        {
+            return Regex.Replace(str, "<.*?>", String.Empty);
+        }
     }
 }
