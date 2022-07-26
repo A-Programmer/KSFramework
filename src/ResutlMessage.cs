@@ -1,4 +1,5 @@
 ﻿using System;
+using KSFramework.Enums;
 using Newtonsoft.Json;
 
 namespace KSFramework
@@ -6,7 +7,7 @@ namespace KSFramework
     public class ResultMessage
     { 
         public bool IsSuccess { get; set; }
-        public Status Status { get; set; }
+        public ApiResultStatusCode Status { get; set; }
         public string Message { get; set; }
 
         protected ResultMessage()
@@ -14,7 +15,7 @@ namespace KSFramework
 
         }
 
-        public ResultMessage(bool isSuccess, Status status, string message)
+        public ResultMessage(bool isSuccess, ApiResultStatusCode status, string message)
         {
             IsSuccess = isSuccess;
             Status = status;
@@ -28,13 +29,13 @@ namespace KSFramework
         {
 
         }
-        public ResultMessage(bool isSuccess, TData data, Status status, string message) : base(isSuccess, status, message)
+        public ResultMessage(bool isSuccess, TData data, ApiResultStatusCode status, string message) : base(isSuccess, status, message)
         {
             Data = data;
 
         }
 
-        public ResultMessage(bool isSuccess,TData data, Status status, string message, int? pageIndex, int? totalPages, int? totalItems,
+        public ResultMessage(bool isSuccess,TData data, ApiResultStatusCode status, string message, int? pageIndex, int? totalPages, int? totalItems,
             bool? showPagination) : base(isSuccess, status, message)
         {
             Data = data;
@@ -86,16 +87,5 @@ namespace KSFramework
                 return (PageIndex < TotalPages);
             }
         }
-    }
-
-    public enum Status
-    {
-        Success = 200,
-        BadRequest = 400,
-        NotFound = 404,
-        ServerError = 500,
-        NotAuthenticated = 401,
-        NotAuthorized = 403,
-        DuplicateRecord = 405
     }
 }
