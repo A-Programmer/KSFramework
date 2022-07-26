@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using KSFramework.Domain.AggregatesHelper;
 
-namespace KSFramework.Repository
+namespace KSFramework.GenericRepository
 {
     public interface IRepository<TEntity> where TEntity : class, IAggregateRoot
     {
