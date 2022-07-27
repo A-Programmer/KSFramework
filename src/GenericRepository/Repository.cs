@@ -7,7 +7,7 @@ namespace KSFramework.GenericRepository
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IAggregateRoot
     {
-        protected readonly DbContext Context;
+        private readonly DbContext Context;
         protected DbSet<TEntity> Entity;
         public Repository(DbContext context)
         {
@@ -17,51 +17,51 @@ namespace KSFramework.GenericRepository
 
         public virtual async Task AddAsync(TEntity entity)
         {
-            await Context.Set<TEntity>().AddAsync(entity);
+            await Entity.AddAsync(entity);
         }
 
         public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
-            await Context.Set<TEntity>().AddRangeAsync(entities);
+            await Entity.AddRangeAsync(entities);
         }
 
         public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return Context.Set<TEntity>().Where(predicate);
+            return Entity.Where(predicate);
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await Context.Set<TEntity>().ToListAsync();
+            return await Entity.ToListAsync();
         }
         protected IQueryable<TEntity> GetAll()
         {
-            return Context.Set<TEntity>();
+            return Entity;
         }
 
         public virtual async ValueTask<TEntity> GetByIdAsync(object id)
         {
-            return await Context.Set<TEntity>().FindAsync(id);
+            return await Entity.FindAsync(id);
         }
 
         public void Remove(TEntity entity)
         {
-            Context.Set<TEntity>().Remove(entity);
+            Entity.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            Context.Set<TEntity>().RemoveRange(entities);
+            Entity.RemoveRange(entities);
         }
 
         public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await Context.Set<TEntity>().SingleOrDefaultAsync(predicate);
+            return await Entity.SingleOrDefaultAsync(predicate);
         }
 
         public async Task<bool> IsExistValuForPropertyAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await Context.Set<TEntity>().AnyAsync(predicate);
+            return await Entity.AnyAsync(predicate);
         }
     }
 }
