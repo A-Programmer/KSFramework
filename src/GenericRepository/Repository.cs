@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using KSFramework.Domain.AggregatesHelper;
+using KSFramework.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace KSFramework.GenericRepository
@@ -34,9 +35,10 @@ namespace KSFramework.GenericRepository
         {
             return await Entity.ToListAsync();
         }
-        protected IQueryable<TEntity> GetAll()
+
+        public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false)
         {
-            return Entity;
+            return await PaginatedList<TEntity>.CreateAsync(Entity, pageIndex, pageSize, where, orderBy, desc);
         }
 
         public virtual async ValueTask<TEntity> GetByIdAsync(object id)
