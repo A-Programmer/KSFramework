@@ -11,6 +11,9 @@ namespace KSFramework.Pagination
 {
     public class PaginatedList<T> : List<T>
     {
+        protected PaginatedList()
+        {
+        }
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
         public int TotalItems { get; private set; }
