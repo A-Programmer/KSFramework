@@ -38,7 +38,12 @@ namespace KSFramework.GenericRepository
 
         public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false)
         {
-            return await PaginatedList<TEntity>.CreateAsync(Entity, pageIndex, pageSize, where, orderBy, desc);
+            return await PaginatedList<TEntity>.CreateAsync(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc);
+        }
+
+        public PaginatedList<TEntity> GetPaged(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false)
+        {
+            return PaginatedList<TEntity>.Create(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc);
         }
 
         public virtual async ValueTask<TEntity> GetByIdAsync(object id)
