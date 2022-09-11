@@ -6,6 +6,11 @@ namespace KSFramework.Domain
 
     }
 
+    public abstract class BaseEntity : BaseEntity<Guid>
+    {
+        public new Guid Id { get; set; } = Guid.NewGuid();
+    }
+
     public abstract class BaseEntity<TKey> : IEntity
     {
         public TKey Id { get; set; }
