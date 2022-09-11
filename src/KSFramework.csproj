@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>KSFramework</PackageId>
-    <Version>1.1.8</Version>
+    <Version>1.1.9</Version>
     <Authors>Kamran Sadin</Authors>
     <Company>Sadin</Company>
     <CopyRight>Copyright (c) 2022 SadinCo.</CopyRight>
@@ -19,10 +19,11 @@
     <PackageTags>Sadin,Kamran,utility,dotnet,tools</PackageTags>
     <Title>KS Framework</Title>
     <Description>A tool for .NET projects contain utilities for working with string, numbers, date time, and also helpers and base classes for Clean Architecture and DDD projects</Description>
-    <ReleaseNotes>Pagination improved: where and order by added to pagination.</ReleaseNotes>
+    <ReleaseNotes>Making some improvements for DDD (BaseEntity, DomainEvents, ValueObjec) and adding MediatR nuget package.</ReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
