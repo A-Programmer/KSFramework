@@ -51,5 +51,10 @@ namespace KSFramework.Domain.AggregatesHelper
         {
             return !(one?.Equals(two) ?? (one is null && two is null ? true : false));
         }
+
+        public ValueObject GetCopy()
+        {
+            return MemberwiseClone() as ValueObject;
+        }
     }
 }
