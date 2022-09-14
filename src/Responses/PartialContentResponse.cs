@@ -8,3 +8,12 @@ public class PartialContentResponse<T> : SuccessResponse<T>
         
     }
 }
+
+public class PartialContentResponse : SuccessResponse
+{
+    public PartialContentResponse()
+        : base(206)
+    {
+        
+    }
+}

@@ -9,3 +9,14 @@ public class CreatedResponse<T> : SuccessResponse<T>
     }
 }
 
+
+
+public class CreatedResponse : SuccessResponse
+{
+    public CreatedResponse()
+        : base(201)
+    {
+        
+    }
+}
+

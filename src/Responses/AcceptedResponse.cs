@@ -9,3 +9,13 @@ public class AcceptedResponse<T> : SuccessResponse<T>
     }
 }
 
+
+public class AcceptedResponse : SuccessResponse
+{
+    public AcceptedResponse()
+        : base(202)
+    {
+        
+    }
+}
+

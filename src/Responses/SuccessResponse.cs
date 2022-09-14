@@ -16,3 +16,13 @@ public abstract class SuccessResponse<T>
     public T? Result { get; set; }
 }
 
+public abstract class SuccessResponse
+{
+    public SuccessResponse(int code)
+    {
+        Code = code;
+    }
+
+    public int Code { get; protected set; } = 200;
+}
+
