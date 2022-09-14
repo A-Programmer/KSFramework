@@ -7,4 +7,10 @@ public class ApplicationBadRequestException<T> : ApplicationException<T>
     {
         
     }
+    
+    public ApplicationBadRequestException(string message)
+        : base(code: 400, message)
+    {
+        
+    }
 }

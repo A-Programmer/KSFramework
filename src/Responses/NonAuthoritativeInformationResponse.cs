@@ -2,8 +2,8 @@ namespace KSFramework.Responses;
 
 public class NonAuthoritativeInformationResponse<T> : SuccessResponse<T>
 {
-    public NonAuthoritativeInformationResponse(int code, T? result)
-        : base(code, result)
+    public NonAuthoritativeInformationResponse(T? result)
+        : base(203, result)
     {
         
     }

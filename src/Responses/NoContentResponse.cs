@@ -2,8 +2,8 @@ namespace KSFramework.Responses;
 
 public class NoContentResponse<T> : SuccessResponse<T>
 {
-    public NoContentResponse(int code, T? result)
-        : base(code, result)
+    public NoContentResponse(T? result)
+        : base(204, result)
     {
         
     }
