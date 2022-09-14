@@ -7,4 +7,9 @@ public class ApplicationServerErrorException<T> : ApplicationException<T>
     {
         
     }
+    public ApplicationServerErrorException(string message)
+        : base(code: 500, message)
+    {
+        
+    }
 }

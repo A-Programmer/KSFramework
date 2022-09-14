@@ -7,4 +7,9 @@ public class ApplicationNotFoundException<T> : ApplicationException<T>
     {
         
     }
+    public ApplicationNotFoundException(string message)
+        : base(code: 404, message)
+    {
+        
+    }
 }

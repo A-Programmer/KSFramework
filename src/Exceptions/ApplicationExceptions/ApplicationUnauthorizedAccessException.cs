@@ -7,4 +7,9 @@ public class ApplicationUnauthorizedAccessException<T> : ApplicationException<T>
     {
         
     }
+    public ApplicationUnauthorizedAccessException(string message)
+        : base(code: 401, message)
+    {
+        
+    }
 }

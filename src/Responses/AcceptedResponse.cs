@@ -2,8 +2,8 @@ namespace KSFramework.Responses;
 
 public class AcceptedResponse<T> : SuccessResponse<T>
 {
-    public AcceptedResponse(int code, T? result)
-        : base(code, result)
+    public AcceptedResponse(T? result)
+        : base(202, result)
     {
         
     }

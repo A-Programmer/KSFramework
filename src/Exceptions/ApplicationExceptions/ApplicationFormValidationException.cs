@@ -7,4 +7,9 @@ public class ApplicationFormValidationException<T> : ApplicationException<T>
     {
         
     }
+    public ApplicationFormValidationException(string message)
+        : base(code: 400, message)
+    {
+        
+    }
 }
