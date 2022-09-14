@@ -9,3 +9,14 @@ public class NonAuthoritativeInformationResponse<T> : SuccessResponse<T>
     }
 }
 
+
+
+public class NonAuthoritativeInformationResponse : SuccessResponse
+{
+    public NonAuthoritativeInformationResponse()
+        : base(203)
+    {
+        
+    }
+}
+

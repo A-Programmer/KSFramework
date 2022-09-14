@@ -9,3 +9,14 @@ public class NoContentResponse<T> : SuccessResponse<T>
     }
 }
 
+
+
+public class NoContentResponse : SuccessResponse
+{
+    public NoContentResponse()
+        : base(204)
+    {
+        
+    }
+}
+

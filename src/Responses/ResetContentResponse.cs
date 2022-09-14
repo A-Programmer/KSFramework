@@ -9,3 +9,12 @@ public class ResetContentResponse<T> : SuccessResponse<T>
     }
 }
 
+public class ResetContentResponse : SuccessResponse
+{
+    public ResetContentResponse()
+        : base(205)
+    {
+        
+    }
+}
+

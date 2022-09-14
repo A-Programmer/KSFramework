@@ -9,3 +9,14 @@ public class OkResponse<T> : SuccessResponse<T>
     }
 }
 
+
+
+public class OkResponse : SuccessResponse
+{
+    public OkResponse()
+        : base(200)
+    {
+        
+    }
+}
+
