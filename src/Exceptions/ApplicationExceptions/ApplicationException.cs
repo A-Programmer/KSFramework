@@ -28,3 +28,23 @@ public abstract class ApplicationException<T> : Exception
         Errors = errors;
     }
 }
+public abstract class ApplicationException : Exception
+{
+    public int Code { get; protected set; }
+
+    public ApplicationException(int code)
+    {
+        Code = code;
+    }
+
+    public ApplicationException(string message)
+        : base(message)
+    {
+    }
+
+    public ApplicationException(int code, string message)
+        : base(message)
+    {
+        Code = code;
+    }
+}

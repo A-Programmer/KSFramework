@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>KSFramework</PackageId>
-    <Version>1.1.13</Version>
+    <Version>1.1.14</Version>
     <Authors>Kamran Sadin</Authors>
     <Company>Sadin</Company>
     <CopyRight>Copyright (c) 2022 SadinCo.</CopyRight>
@@ -19,7 +19,7 @@
     <PackageTags>Sadin,Kamran,utility,dotnet,tools</PackageTags>
     <Title>KS Framework</Title>
     <Description>A tool for .NET projects contain utilities for working with string, numbers, date time, and also helpers and base classes for Clean Architecture and DDD projects</Description>
-    <ReleaseNotes>Success Responses added to the project.</ReleaseNotes>
+    <ReleaseNotes>Adding non-generic ApplicationExceptions.</ReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
