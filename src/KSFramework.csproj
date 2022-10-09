@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>KSFramework</PackageId>
-    <Version>1.1.25</Version>
+    <Version>1.1.16</Version>
     <Authors>Kamran Sadin</Authors>
     <Company>Sadin</Company>
     <CopyRight>Copyright (c) 2022 SadinCo.</CopyRight>
@@ -19,7 +19,7 @@
     <Title>KS Framework</Title>
     <Description>A tool for .NET projects contain utilities for working with string, numbers, date time, and also helpers and base classes for Clean Architecture and DDD projects</Description>
     <ReleaseNotes>New responses added.</ReleaseNotes>
-    <LangVersion>11</LangVersion>
+    <RepositoryUrl>https://github.com/A-Programmer/KSFramework</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
