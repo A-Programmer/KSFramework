@@ -101,24 +101,24 @@ temp/
 
 #### Build results
 
-**/.idea/
-**/.vs/
-**/.code/
-**/.vscode/
-**/[Oo]ut/
-**/[Oo]bj/
-**/[Bb]in/
-**/bld/
-**/build/
-**/x86/
-**/x64/
-**/[Rr]eleases/
-**/[Rr]elease/
-**/[Dd]ebugPublic/
-**/[Dd]ebug/
-**/sonarqube/
-**/.sonarqube/
-!src/bin/Release/*.nupkg
+# **/.idea/
+# **/.vs/
+# **/.code/
+# **/.vscode/
+# **/[Oo]ut/
+# **/[Oo]bj/
+# **/[Bb]in/
+# **/bld/
+# **/build/
+# **/x86/
+# **/x64/
+# **/[Rr]eleases/
+# **/[Rr]elease/
+# **/[Dd]ebugPublic/
+# **/[Dd]ebug/
+# **/sonarqube/
+# **/.sonarqube/
+!**/*.nupkg
 
 
 ## others
