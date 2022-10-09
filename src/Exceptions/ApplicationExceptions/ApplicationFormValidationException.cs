@@ -1,7 +1,10 @@
+using FluentValidation.Results;
+
 namespace KSFramework.Exceptions.ApplicationExceptions;
 
 public class ApplicationFormValidationException<T> : ApplicationException<T>
 {
+    public IEnumerable<ValidationFailure> Errors;
     public ApplicationFormValidationException()
         : base(code: 400)
     {
@@ -20,6 +23,7 @@ public class ApplicationFormValidationException<T> : ApplicationException<T>
 }
 public class ApplicationFormValidationException: ApplicationException
 {
+    public IEnumerable<ValidationFailure> Errors;
     public ApplicationFormValidationException()
         : base(code: 400)
     {
