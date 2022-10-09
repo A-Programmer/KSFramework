@@ -118,3 +118,4 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+!src/bin/Release/*.nupkg
