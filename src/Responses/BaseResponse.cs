@@ -1,12 +1,12 @@
 namespace KSFramework.Responses;
 
-public abstract class SuccessResponse<T>
+public abstract class BaseResponse<T>
 {
-    public SuccessResponse(int code)
+    public BaseResponse(int code)
     {
         Code = code;
     }
-    public SuccessResponse(int code, T? result)
+    public BaseResponse(int code, T? result)
     {
         Code = code;
         Result = result;
@@ -16,9 +16,9 @@ public abstract class SuccessResponse<T>
     public T? Result { get; set; }
 }
 
-public abstract class SuccessResponse
+public abstract class BaseResponse
 {
-    public SuccessResponse(int code)
+    public BaseResponse(int code)
     {
         Code = code;
     }

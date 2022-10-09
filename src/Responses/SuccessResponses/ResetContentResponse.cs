@@ -1,6 +1,6 @@
 namespace KSFramework.Responses;
 
-public class ResetContentResponse<T> : SuccessResponse<T>
+public class ResetContentResponse<T> : BaseResponse<T>
 {
     public ResetContentResponse(T? result)
         : base(205, result)
@@ -9,7 +9,7 @@ public class ResetContentResponse<T> : SuccessResponse<T>
     }
 }
 
-public class ResetContentResponse : SuccessResponse
+public class ResetContentResponse : BaseResponse
 {
     public ResetContentResponse()
         : base(205)
