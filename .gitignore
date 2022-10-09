@@ -94,27 +94,28 @@ src/KSFramework/.code/
 src/KSFramework/.vscode/
 src/KSFramework/[Oo]ut/
 src/KSFramework/[Oo]bj/
-# src/KSFramework/[Bb]in/
+src/KSFramework/[Bb]in/
 src/KSFramework/bld/
 src/KSFramework/build/
 src/KSFramework/x86/
 src/KSFramework/x64/
 src/KSFramework/[Rr]eleases/
-# src/KSFramework/[Rr]elease/
+src/KSFramework/[Rr]elease/
 src/KSFramework/[Dd]ebugPublic/
 src/KSFramework/[Dd]ebug/
 ## others
 [Dd]ebug/
 [Dd]ebugPublic/
-# [Rr]elease/
+[Rr]elease/
 [Rr]eleases/
 x64/
 x86/
 build/
 bld/
-# [Bb]in/
+[Bb]in/
 [Oo]bj/
 [Oo]ut/
 msbuild.log
 msbuild.err
 msbuild.wrn
+!src/bin/Release/*.nupkg
