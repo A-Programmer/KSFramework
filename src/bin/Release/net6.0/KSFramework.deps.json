@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "KSFramework/1.1.23": {
+      "KSFramework/1.1.25": {
         "dependencies": {
           "MediatR": "10.0.1",
           "Microsoft.AspNetCore.Mvc": "2.2.0",
@@ -2342,7 +2342,7 @@
     }
   },
   "libraries": {
-    "KSFramework/1.1.23": {
+    "KSFramework/1.1.25": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
