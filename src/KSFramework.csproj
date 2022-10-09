@@ -14,13 +14,13 @@
     <PackageIconUrl>https://api.nuget.org/v3-flatcontainer/ks-utilities/1.0.0.2/icon</PackageIconUrl>
     <Owners>Kamran Sadin</Owners>
     <PackageProjectUrl>https://sadin.dev/nuget-packages/ksframework</PackageProjectUrl>
-    <Repository>https://github.com/A-Programmer/KSFramework.git</Repository>
     <Summary>A Mini framework for .NET Core</Summary>
     <PackageTags>Sadin,Kamran,utility,dotnet,tools</PackageTags>
     <Title>KS Framework</Title>
     <Description>A tool for .NET projects contain utilities for working with string, numbers, date time, and also helpers and base classes for Clean Architecture and DDD projects</Description>
     <ReleaseNotes>Adding non-generic ApplicationExceptions.</ReleaseNotes>
     <LangVersion>11</LangVersion>
+    <RepositoryUrl>https://github.com/A-Programmer/KSFramework</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
