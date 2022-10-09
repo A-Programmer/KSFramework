@@ -20,6 +20,7 @@
     <Title>KS Framework</Title>
     <Description>A tool for .NET projects contain utilities for working with string, numbers, date time, and also helpers and base classes for Clean Architecture and DDD projects</Description>
     <ReleaseNotes>Adding non-generic ApplicationExceptions.</ReleaseNotes>
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
