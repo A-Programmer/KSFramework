@@ -1,6 +1,4 @@
-
 # Compiled source #
-###################
 *.com
 *.class
 *.dll
@@ -13,7 +11,6 @@
 *.exe
 *.o
 *.so
-
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source
@@ -34,7 +31,6 @@
 *.rar
 *.tar
 *.zip
-
 # Logs and databases #
 ######################
 *.log
@@ -43,7 +39,6 @@
 *.log
 *.sql
 *.sqlite
-
 # OS generated files #
 ######################
 .DS_Store
@@ -61,7 +56,6 @@ Thumbs.db
 ehthumbs.db
 Thumbs.db
 ######################
-
 *.swp
 *.*~
 project.lock.json
@@ -72,13 +66,10 @@ nupkg/
 project.lock.json
 *.pyc
 nupkg/
-
 # Visual Studio and Visual Studio Code files
 .vs/
 .code/
 .vscode/
-.idea/
-
 # User-specific files
 *.suo
 *.user
@@ -88,39 +79,30 @@ nupkg/
 *.user
 *.userosscache
 *.sln.docstates
-
-
 ## backup directory
 backup/
-
 #Other directories
 notes/
-
 #Temp files
 temp/
-
 #### Build results
-
-**/.idea/
-**/.vs/
-**/.code/
-**/.vscode/
-**/[Oo]ut/
-**/[Oo]bj/
-**/[Bb]in/
-**/bld/
-**/build/
-**/x86/
-**/x64/
-**/[Rr]eleases/
-**/[Rr]elease/
-**/[Dd]ebugPublic/
-**/[Dd]ebug/
-**/sonarqube/
-**/.sonarqube/
-!src/bin/Release/*.nupkg
-
-
+src/.vs/
+src/.code/
+src/.vscode/
+src/KSFramework/.vs/
+src/KSFramework/.code/
+src/KSFramework/.vscode/
+src/KSFramework/[Oo]ut/
+src/KSFramework/[Oo]bj/
+src/KSFramework/[Bb]in/
+src/KSFramework/bld/
+src/KSFramework/build/
+src/KSFramework/x86/
+src/KSFramework/x64/
+src/KSFramework/[Rr]eleases/
+src/KSFramework/[Rr]elease/
+src/KSFramework/[Dd]ebugPublic/
+src/KSFramework/[Dd]ebug/
 ## others
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -136,4 +118,3 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
-
