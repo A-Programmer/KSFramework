@@ -1,6 +1,6 @@
 namespace KSFramework.Responses;
 
-public class OkResponse<T> : SuccessResponse<T>
+public class OkResponse<T> : BaseResponse<T>
 {
     public OkResponse(T? result)
         : base(200, result)
@@ -11,7 +11,7 @@ public class OkResponse<T> : SuccessResponse<T>
 
 
 
-public class OkResponse : SuccessResponse
+public class OkResponse : BaseResponse
 {
     public OkResponse()
         : base(200)

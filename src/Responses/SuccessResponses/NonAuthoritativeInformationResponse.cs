@@ -1,6 +1,6 @@
 namespace KSFramework.Responses;
 
-public class NonAuthoritativeInformationResponse<T> : SuccessResponse<T>
+public class NonAuthoritativeInformationResponse<T> : BaseResponse<T>
 {
     public NonAuthoritativeInformationResponse(T? result)
         : base(203, result)
@@ -11,7 +11,7 @@ public class NonAuthoritativeInformationResponse<T> : SuccessResponse<T>
 
 
 
-public class NonAuthoritativeInformationResponse : SuccessResponse
+public class NonAuthoritativeInformationResponse : BaseResponse
 {
     public NonAuthoritativeInformationResponse()
         : base(203)
