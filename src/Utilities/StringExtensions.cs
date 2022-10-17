@@ -29,7 +29,7 @@ namespace KSFramework.Utilities
             }
             catch (Exception)
             {
-                throw new AppException(ApiResultStatusCode.ServerError, "آیتم مورد نظر یافت نشد", HttpStatusCode.InternalServerError);
+                throw new KSNotFoundException("Item could not be found.");
             }
         }
 
