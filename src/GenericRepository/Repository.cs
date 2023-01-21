@@ -8,7 +8,7 @@ namespace KSFramework.GenericRepository
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IAggregateRoot
     {
-        private readonly DbContext Context;
+        protected readonly DbContext Context;
         protected DbSet<TEntity> Entity;
         public Repository(DbContext context)
         {
