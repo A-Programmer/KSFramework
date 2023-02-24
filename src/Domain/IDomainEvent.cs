@@ -1,10 +1,8 @@
 using MediatR;
 
-namespace KSFramework.Domain
-{
-    public interface IDomainEvent : INotification
-    {
-        DateTime OccurredOn { get; }
-    }
-}
+namespace KSFramework.Domain;
 
+public interface IDomainEvent : INotification
+{
+    DateTime OccurredOn { get; }
+}

@@ -1,4 +1,4 @@
-namespace KSFramework.Responses;
+namespace KSFramework.Responses.FailedResponses;
 
 public abstract class FailedResponse<T> : BaseResponse<T>
 {

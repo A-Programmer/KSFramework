@@ -1,4 +1,4 @@
-namespace KSFramework.Responses;
+namespace KSFramework.Responses.FailedResponses;
 
 public class BadRequestResponse<T> : FailedResponse<T>
 {

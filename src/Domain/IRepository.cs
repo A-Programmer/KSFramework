@@ -1,8 +1,8 @@
-using KSFramework.Domain.AggregatesHelper;
+using KSFramework.Primitives;
 
 namespace KSFramework.Domain;
 
-public interface IRepository<T> where T : class,  IAggregateRoot
+public interface IRepository<T> where T :  AggregateRoot
 {
 }
 

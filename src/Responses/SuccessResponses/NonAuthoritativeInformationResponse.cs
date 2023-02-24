@@ -1,4 +1,4 @@
-namespace KSFramework.Responses;
+namespace KSFramework.Responses.SuccessResponses;
 
 public class NonAuthoritativeInformationResponse<T> : BaseResponse<T>
 {
