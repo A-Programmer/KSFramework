@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KSFramework.GenericRepository
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IAggregateRoot
+    public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class, IAggregateRoot
     {
         protected readonly DbContext Context;
         protected DbSet<TEntity> Entity;
-        public Repository(DbContext context)
+        public GenericRepository(DbContext context)
         {
             this.Context = context;
             Entity = Context.Set<TEntity>();
