@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace KSFramework.Domain.AggregatesHelper
+﻿namespace KSFramework.Domain.AggregatesHelper
 {
-    public abstract class ValueObject
+    public abstract class ValueObject : IEquatable<ValueObject>
     {
         protected static bool EqualOperator(ValueObject left, ValueObject right)
         {
@@ -24,14 +20,7 @@ namespace KSFramework.Domain.AggregatesHelper
 
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            var other = (ValueObject)obj;
-
-            return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+            return obj is ValueObject other && ValuesAreEqual(other);
         }
 
         public override int GetHashCode()
@@ -55,6 +44,16 @@ namespace KSFramework.Domain.AggregatesHelper
         public ValueObject GetCopy()
         {
             return MemberwiseClone() as ValueObject;
+        }
+
+        public bool Equals(ValueObject? other)
+        {
+            return other is not null && ValuesAreEqual(other);
+        }
+
+        private bool ValuesAreEqual(ValueObject other)
+        {
+            return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
     }
 }
