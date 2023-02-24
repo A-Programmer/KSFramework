@@ -1,4 +1,4 @@
-namespace KSFramework.Responses;
+namespace KSFramework.Responses.SuccessResponses;
 
 public class AcceptedResponse<T> : BaseResponse<T>
 {

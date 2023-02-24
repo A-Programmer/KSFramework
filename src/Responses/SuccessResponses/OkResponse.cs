@@ -1,4 +1,4 @@
-namespace KSFramework.Responses;
+namespace KSFramework.Responses.SuccessResponses;
 
 public class OkResponse<T> : BaseResponse<T>
 {

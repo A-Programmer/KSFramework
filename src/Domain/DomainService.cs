@@ -1,10 +1,8 @@
-﻿using System;
-namespace KSFramework.Domain.DomainServices
+﻿namespace KSFramework.Domain;
+
+public abstract class DomainService : IDomainService
 {
-    public abstract class DomainService : IDomainService
+    public DomainService()
     {
-        public DomainService()
-        {
-        }
     }
 }
