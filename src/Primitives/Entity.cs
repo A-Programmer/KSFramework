@@ -1,5 +1,6 @@
-﻿using System;
-namespace KSFramework.Domain
+﻿using KSFramework.Domain;
+
+namespace KSFramework.Primitives
 {
     public interface IEntity
     {

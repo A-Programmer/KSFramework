@@ -1,30 +1,24 @@
-using KSFramework.Pagination;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
-namespace KSFramework.Pagination
+namespace KSFramework.Pagination;
+
+public static class QueryableExtension
 {
-    public static class QueryableExtension
+    public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName)
     {
-        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName)
-        {
-            return source.OrderBy(ToLambda<T>(propertyName));
-        }
-        public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string propertyName)
-        {
-            return source.OrderByDescending(ToLambda<T>(propertyName));
-        }
+        return source.OrderBy(ToLambda<T>(propertyName));
+    }
+    public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string propertyName)
+    {
+        return source.OrderByDescending(ToLambda<T>(propertyName));
+    }
 
-        public static Expression<Func<T, object>> ToLambda<T>(string propertyName)
-        {
-            var parameter = Expression.Parameter(typeof(T));
-            var property = Expression.Property(parameter, propertyName);
-            var propAsObject = Expression.Convert(property, typeof(object));
+    public static Expression<Func<T, object>> ToLambda<T>(string propertyName)
+    {
+        var parameter = Expression.Parameter(typeof(T));
+        var property = Expression.Property(parameter, propertyName);
+        var propAsObject = Expression.Convert(property, typeof(object));
 
-            return Expression.Lambda<Func<T, object>>(propAsObject, parameter);
-        }
+        return Expression.Lambda<Func<T, object>>(propAsObject, parameter);
     }
 }

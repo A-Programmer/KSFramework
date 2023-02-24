@@ -1,7 +1,5 @@
-﻿using System;
-namespace KSFramework.Domain.DomainServices
+﻿namespace KSFramework.Domain;
+
+public interface IDomainService
 {
-    public interface IDomainService
-    {
-    }
 }
