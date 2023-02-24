@@ -2,7 +2,7 @@ using KSFramework.Domain.AggregatesHelper;
 
 namespace KSFramework.Domain;
 
-public interface IRepository<T> where T : IAggregateRoot
+public interface IRepository<T> where T : class,  IAggregateRoot
 {
 }
 
