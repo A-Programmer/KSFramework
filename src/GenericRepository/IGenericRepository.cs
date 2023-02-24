@@ -5,7 +5,7 @@ using KSFramework.Pagination;
 
 namespace KSFramework.GenericRepository
 {
-    public interface IRepository<TEntity> where TEntity : class, IAggregateRoot
+    public interface IGenericRepository<TEntity> where TEntity : class, IAggregateRoot
     {
         ValueTask<TEntity> GetByIdAsync(object id);
         Task<IEnumerable<TEntity>> GetAllAsync();
