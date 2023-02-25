@@ -1,148 +1,70 @@
 ﻿using KSFramework.Domain;
 
-namespace KSFramework.Primitives
+namespace KSFramework.Primitives;
+
+public abstract class Entity : IEquatable<Entity>
 {
-    public interface IEntity
+    protected Entity(Guid id)
     {
+        Id = id;
+    }
+    public Guid Id { get; private init; }
+    public static bool operator ==(Entity? first, Entity? second)
+    {
+        return first is not null && second is not null && first.Equals(second);
+    }
+    public static bool operator !=(Entity? first, Entity? second)
+    {
+        return !(first == second);
+    }
+    public int Version { get; private set; } = 0;
 
+    private List<IDomainEvent> _domainEvents;
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
+
+    protected void AddDomainEvent(IDomainEvent domainEvent)
+    {
+        _domainEvents ??= new List<IDomainEvent>();
+        _domainEvents.Add(domainEvent);
     }
 
-    public abstract class Entity : IEquatable<Entity>
+    protected void IncreaseVersion()
     {
-        protected Entity(Guid id)
-        {
-            Id = id;
-        }
-        public Guid Id { get; private init; }
-        public static bool operator ==(Entity? first, Entity? second)
-        {
-            return first is not null && second is not null && first.Equals(second);
-        }
-        public static bool operator !=(Entity? first, Entity? second)
-        {
-            return !(first == second);
-        }
-        public int Version { get; private set; } = 0;
-
-        private List<IDomainEvent> _domainEvents;
-        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
-
-        protected void AddDomainEvent(IDomainEvent domainEvent)
-        {
-            _domainEvents ??= new List<IDomainEvent>();
-            _domainEvents.Add(domainEvent);
-        }
-
-        protected void IncreaseVersion()
-        {
-            Version++;
-        }
-
-        public void ClearDomainEvents()
-        {
-            _domainEvents?.Clear();
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is nuint)
-                return false;
-
-            if (obj.GetType() != GetType())
-                return false;
-
-            if (obj is not Entity entity)
-                return false;
-
-            return entity.Id == this.Id;
-        }
-
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode() * 41;
-        }
-
-        public bool Equals(Entity? other)
-        {
-            if (other is null)
-                return false;
-            
-            if (other.GetType() != GetType())
-                return false;
-
-            return other.Id == Id;
-        }
+        Version++;
     }
-    
-    public abstract class EntityWithSoftDelete : IEquatable<EntityWithSoftDelete>
+
+    public void ClearDomainEvents()
     {
-        protected EntityWithSoftDelete(Guid id)
-        {
-            Id = id;
-        }
-        public Guid Id { get; private init; }
-        public bool IsDeleted { get; private set; } = false;
+        _domainEvents?.Clear();
+    }
 
-        public void Delete() => IsDeleted = true;
+    public override bool Equals(object? obj)
+    {
+        if (obj is nuint)
+            return false;
 
-        public void Recover() => IsDeleted = false;
-        public static bool operator ==(EntityWithSoftDelete? first, EntityWithSoftDelete? second)
-        {
-            return first is not null && second is not null && first.Equals(second);
-        }
-        public static bool operator !=(EntityWithSoftDelete? first, EntityWithSoftDelete? second)
-        {
-            return !(first == second);
-        }
-        public int Version { get; private set; } = 0;
+        if (obj.GetType() != GetType())
+            return false;
 
-        private List<IDomainEvent> _domainEvents;
-        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
+        if (obj is not Entity entity)
+            return false;
 
-        protected void AddDomainEvent(IDomainEvent domainEvent)
-        {
-            _domainEvents ??= new List<IDomainEvent>();
-            _domainEvents.Add(domainEvent);
-        }
+        return entity.Id == this.Id;
+    }
 
-        protected void IncreaseVersion()
-        {
-            Version++;
-        }
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode() * 41;
+    }
 
-        public void ClearDomainEvents()
-        {
-            _domainEvents?.Clear();
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj is nuint)
-                return false;
-
-            if (obj.GetType() != GetType())
-                return false;
-
-            if (obj is not EntityWithSoftDelete entity)
-                return false;
-
-            return entity.Id == this.Id;
-        }
-
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode() * 41;
-        }
-
-        public bool Equals(EntityWithSoftDelete? other)
-        {
-            if (other is null)
-                return false;
+    public bool Equals(Entity? other)
+    {
+        if (other is null)
+            return false;
             
-            if (other.GetType() != GetType())
-                return false;
+        if (other.GetType() != GetType())
+            return false;
 
-            return other.Id == Id;
-        }
+        return other.Id == Id;
     }
 }
