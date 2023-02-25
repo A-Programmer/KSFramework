@@ -1,9 +1,8 @@
 namespace KSFramework.Primitives;
 
-public abstract class EntityWithSoftDelete : Entity
+public abstract class AggregateRootWithSoftDelete : AggregateRoot
 {
-    protected EntityWithSoftDelete(Guid id)
-        : base(id)
+    protected AggregateRootWithSoftDelete(Guid id) : base(id)
     {
     }
     public bool IsDeleted { get; private set; } = false;
