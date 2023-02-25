@@ -8,6 +8,6 @@ public abstract class EntityWithSoftDeleteMapConfiguration<TEntityWithSoftDelete
 {
     public virtual void Configure(EntityTypeBuilder<TEntityWithSoftDelete> builder)
     {
-        builder.HasQueryFilter(t => t.IsDeleted == false);
+        builder.HasQueryFilter(t => !t.IsDeleted);
     }
 }
