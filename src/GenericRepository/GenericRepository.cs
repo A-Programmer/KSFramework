@@ -32,7 +32,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
 
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
-        return await Entity.ToListAsync();
+        return Entity.Any() ? await Entity.ToListAsync() : Enumerable.Empty<TEntity>();
     }
 
     public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false)
