@@ -15,14 +15,14 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         Entity = Context.Set<TEntity>();
     }
 
-    public virtual async Task AddAsync(TEntity entity)
+    public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        await Entity.AddAsync(entity);
+        await Entity.AddAsync(entity, cancellationToken);
     }
 
-    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken))
     {
-        await Entity.AddRangeAsync(entities);
+        await Entity.AddRangeAsync(entities, cancellationToken);
     }
 
     public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
@@ -30,14 +30,14 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         return Entity.Where(predicate);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default(CancellationToken))
     {
-        return Entity.Any() ? await Entity.ToListAsync() : Enumerable.Empty<TEntity>();
+        return await Entity.ToListAsync(cancellationToken);
     }
 
-    public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false)
+    public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return await PaginatedList<TEntity>.CreateAsync(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc);
+        return await PaginatedList<TEntity>.CreateAsync(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc, cancellationToken);
     }
 
     public PaginatedList<TEntity> GetPaged(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false)
@@ -45,9 +45,9 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         return PaginatedList<TEntity>.Create(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc);
     }
 
-    public virtual async ValueTask<TEntity> GetByIdAsync(object id)
+    public virtual async ValueTask<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return await Entity.FindAsync(id);
+        return await Entity.FindAsync(id, cancellationToken);
     }
 
     public void Remove(TEntity entity)
@@ -60,13 +60,13 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         Entity.RemoveRange(entities);
     }
 
-    public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return await Entity.SingleOrDefaultAsync(predicate);
+        return await Entity.SingleOrDefaultAsync(predicate, cancellationToken);
     }
 
-    public async Task<bool> IsExistValuForPropertyAsync(Expression<Func<TEntity, bool>> predicate)
+    public async Task<bool> IsExistValuForPropertyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return await Entity.AnyAsync(predicate);
+        return await Entity.AnyAsync(predicate, cancellationToken);
     }
 }

@@ -39,7 +39,7 @@ public class PaginatedList<T> : List<T>
     }
 
     public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize,Expression<Func<T, bool>> where = null,
-        string orderBy = "", bool desc = false)
+        string orderBy = "", bool desc = false, CancellationToken cancellationToken = default(CancellationToken))
     {
         if(where is null) where = x => true;
             
@@ -56,7 +56,7 @@ public class PaginatedList<T> : List<T>
         }
             
         var count = await source.CountAsync(where);
-        var items = await source.Where(where).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+        var items = await source.Where(where).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
         return new PaginatedList<T>(items, count, pageIndex, pageSize);
     }
 
