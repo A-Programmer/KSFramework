@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace KSFramework.Domain;
+namespace KSFramework.Primitives;
 
 public interface IDomainEvent : INotification
 {
