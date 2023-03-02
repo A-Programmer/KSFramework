@@ -1,6 +1,4 @@
-﻿using KSFramework.Domain;
-
-namespace KSFramework.Primitives;
+﻿namespace KSFramework.Primitives;
 
 public abstract class Entity : IEquatable<Entity>
 {
@@ -19,23 +17,9 @@ public abstract class Entity : IEquatable<Entity>
     }
     public int Version { get; private set; } = 0;
 
-    private List<IDomainEvent> _domainEvents;
-    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
-
-    protected void AddDomainEvent(IDomainEvent domainEvent)
-    {
-        _domainEvents ??= new List<IDomainEvent>();
-        _domainEvents.Add(domainEvent);
-    }
-
     protected void IncreaseVersion()
     {
         Version++;
-    }
-
-    public void ClearDomainEvents()
-    {
-        _domainEvents?.Clear();
     }
 
     public override bool Equals(object? obj)
