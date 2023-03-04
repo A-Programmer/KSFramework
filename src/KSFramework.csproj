@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>KSFramework</PackageId>
-    <Version>1.2.17</Version>
+    <Version>1.2.18</Version>
     <Authors>Kamran Sadin</Authors>
     <Company>Sadin</Company>
     <CopyRight>Copyright (c) 2022 SadinCo.</CopyRight>

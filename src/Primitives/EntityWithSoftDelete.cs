@@ -1,8 +1,8 @@
 namespace KSFramework.Primitives;
 
-public abstract class EntityWithSoftDelete : Entity
+public abstract class EntityWithSoftDeleteRemoved : Entity
 {
-    protected EntityWithSoftDelete(Guid id)
+    protected EntityWithSoftDeleteRemoved(Guid id)
         : base(id)
     {
     }
