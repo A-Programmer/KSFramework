@@ -13,28 +13,12 @@ public static class ChangeTrackerExtensions
         IEnumerable<EntityEntry> entities =
             changeTracker
                 .Entries()
-                .Where(t => t.Entity is EntityWithSoftDelete && t.State == EntityState.Deleted);
-        
-        IEnumerable<EntityEntry> aggregateRoots =
-            changeTracker
-                .Entries()
-                .Where(t => t.Entity is AggregateRootWithSoftDelete && t.State == EntityState.Deleted);
+                .Where(t => t.Entity is ISoftDelete && t.State == EntityState.Deleted);
 
         var entityEntriesArray = entities as EntityEntry[] ?? entities.ToArray();
         if (entityEntriesArray.Any())
         {
             foreach(EntityEntry entry in entityEntriesArray)
-            {
-                entry.State = EntityState.Unchanged;
-                entry.Member("IsDeleted").CurrentValue = true;
-                entry.Member("IsDeleted").IsModified = true;
-            }
-        }
-
-        var aggregateRootsArray = aggregateRoots as EntityEntry[] ?? aggregateRoots.ToArray();
-        if (aggregateRootsArray.Any())
-        {
-            foreach(EntityEntry entry in aggregateRootsArray)
             {
                 entry.State = EntityState.Unchanged;
                 entry.Member("IsDeleted").CurrentValue = true;
