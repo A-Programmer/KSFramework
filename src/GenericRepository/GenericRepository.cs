@@ -45,9 +45,9 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         return PaginatedList<TEntity>.Create(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc);
     }
 
-    public virtual async ValueTask<TEntity> GetByIdAsync(object id)
+    public virtual async ValueTask<TEntity> GetByIdAsync(object id, CancellationToken cancellationToken = default(CancellationToken))
     {
-        return await Entity.FindAsync(id);
+        return await Entity.FindAsync(new[] { id }, cancellationToken: cancellationToken);
     }
 
     public void Remove(TEntity entity)
