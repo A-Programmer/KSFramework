@@ -25,9 +25,9 @@ public static class ChangeTrackerExtensions
         {
             foreach(EntityEntry entry in entityEntriesArray)
             {
+                entry.State = EntityState.Modified;
                 EntityWithSoftDelete entity = (EntityWithSoftDelete)entry.Entity;
                 entity.Delete();
-                entry.State = EntityState.Modified;
             }
         }
 
@@ -36,9 +36,9 @@ public static class ChangeTrackerExtensions
         {
             foreach(EntityEntry entry in aggregateRootsArray)
             {
+                entry.State = EntityState.Modified;
                 AggregateRootWithSoftDelete entity = (AggregateRootWithSoftDelete)entry.Entity;
                 entity.Delete();
-                entry.State = EntityState.Modified;
             }
         }
     }
