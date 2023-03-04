@@ -25,6 +25,7 @@ public static class ChangeTrackerExtensions
         {
             foreach(EntityEntry entry in entityEntriesArray)
             {
+                entry.State = EntityState.Modified;
                 entry.Member("IsDeleted").CurrentValue = true;
             }
         }
@@ -34,6 +35,7 @@ public static class ChangeTrackerExtensions
         {
             foreach(EntityEntry entry in aggregateRootsArray)
             {
+                entry.State = EntityState.Modified;
                 entry.Member("IsDeleted").CurrentValue = true;
             }
         }
