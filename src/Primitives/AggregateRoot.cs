@@ -4,12 +4,13 @@ namespace KSFramework.Primitives;
 
 public class AggregateRoot : Entity
 {
+    private List<IDomainEvent> _domainEvents = new();
+    
     protected AggregateRoot(Guid id) 
         : base(id)
     {
     }
-
-    private List<IDomainEvent> _domainEvents;
+    
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
 
     protected void AddDomainEvent(IDomainEvent domainEvent)
