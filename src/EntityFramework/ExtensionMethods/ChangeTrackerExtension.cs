@@ -27,6 +27,7 @@ public static class ChangeTrackerExtensions
             {
                 entry.State = EntityState.Unchanged;
                 entry.Member("IsDeleted").CurrentValue = true;
+                entry.Member("IsDeleted").IsModified = true;
             }
         }
 
@@ -37,6 +38,7 @@ public static class ChangeTrackerExtensions
             {
                 entry.State = EntityState.Unchanged;
                 entry.Member("IsDeleted").CurrentValue = true;
+                entry.Member("IsDeleted").IsModified = true;
             }
         }
     }
