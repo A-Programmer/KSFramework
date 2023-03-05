@@ -21,8 +21,12 @@ public static class ChangeTrackerExtensions
             foreach(EntityEntry entry in entityEntriesArray)
             {
                 ISoftDelete entity = (ISoftDelete)entry.Entity;
-                entity.IsDeleted = true;
-                entry.State = EntityState.Modified;
+
+                entry.State = EntityState.Unchanged;
+                entity.Delete();
+
+                changeTracker.CascadeDeleteTiming = CascadeTiming.OnSaveChanges;
+                changeTracker.DeleteOrphansTiming = CascadeTiming.OnSaveChanges;
             }
         }
     }
