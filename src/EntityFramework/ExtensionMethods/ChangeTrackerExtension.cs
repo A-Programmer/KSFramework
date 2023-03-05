@@ -9,6 +9,9 @@ public static class ChangeTrackerExtensions
     public static void SetAuditProperties(this ChangeTracker changeTracker)
     {
         changeTracker.DetectChanges();
+
+        changeTracker.CascadeDeleteTiming = CascadeTiming.OnSaveChanges;
+        changeTracker.DeleteOrphansTiming = CascadeTiming.OnSaveChanges;
         
         IEnumerable<EntityEntry> entities =
             changeTracker
@@ -24,9 +27,6 @@ public static class ChangeTrackerExtensions
 
                 entry.State = EntityState.Unchanged;
                 entity.Delete();
-
-                changeTracker.CascadeDeleteTiming = CascadeTiming.OnSaveChanges;
-                changeTracker.DeleteOrphansTiming = CascadeTiming.OnSaveChanges;
             }
         }
     }
