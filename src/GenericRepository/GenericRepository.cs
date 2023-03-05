@@ -35,12 +35,12 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         return await Entity.ToListAsync(cancellationToken);
     }
 
-    public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false, CancellationToken cancellationToken = default(CancellationToken))
+    public virtual async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false, CancellationToken cancellationToken = default(CancellationToken))
     {
         return await PaginatedList<TEntity>.CreateAsync(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc, cancellationToken);
     }
 
-    public PaginatedList<TEntity> GetPaged(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false)
+    public virtual PaginatedList<TEntity> GetPaged(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> where = null, string orderBy = "", bool desc = false)
     {
         return PaginatedList<TEntity>.Create(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc);
     }
@@ -50,22 +50,22 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
         return await Entity.FindAsync(new[] { id }, cancellationToken: cancellationToken);
     }
 
-    public void Remove(TEntity entity)
+    public virtual void Remove(TEntity entity)
     {
         Entity.Remove(entity);
     }
 
-    public void RemoveRange(IEnumerable<TEntity> entities)
+    public virtual void RemoveRange(IEnumerable<TEntity> entities)
     {
         Entity.RemoveRange(entities);
     }
 
-    public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
+    public virtual async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
     {
         return await Entity.SingleOrDefaultAsync(predicate, cancellationToken);
     }
 
-    public async Task<bool> IsExistValuForPropertyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
+    public virtual async Task<bool> IsExistValuForPropertyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
     {
         return await Entity.AnyAsync(predicate, cancellationToken);
     }
