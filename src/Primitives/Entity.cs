@@ -15,13 +15,6 @@ public abstract class Entity : IEquatable<Entity>
     {
         return !(first == second);
     }
-    public int Version { get; private set; } = 0;
-
-    protected void IncreaseVersion()
-    {
-        Version++;
-    }
-
     public override bool Equals(object? obj)
     {
         if (obj is nuint)
