@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>KSFramework</PackageId>
-    <Version>1.2.24</Version>
+    <Version>1.3.0</Version>
     <Authors>Kamran Sadin</Authors>
     <Company>Sadin</Company>
     <CopyRight>Copyright (c) 2022 SadinCo.</CopyRight>
@@ -18,7 +18,7 @@
     <PackageTags>Sadin,Kamran,utility,dotnet,tools</PackageTags>
     <Title>KS Framework</Title>
     <Description>A tool for .NET projects contain utilities for working with string, numbers, date time, and also helpers and base classes for Clean Architecture and DDD projects</Description>
-    <ReleaseNotes>Repository pattern improved. ValueObject.cs improved. Soft delete feature added</ReleaseNotes>
+    <ReleaseNotes>Logical delete feature removed for now. It will be add in the future.</ReleaseNotes>
     <RepositoryUrl>https://github.com/A-Programmer/KSFramework</RepositoryUrl>
   </PropertyGroup>
 
