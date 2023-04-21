@@ -11,7 +11,7 @@ public static class ModelBuilderExtensions
     /// Singularizin table name like Posts to Post or People to Person
     /// </summary>
     /// <param name="modelBuilder"></param>
-    public static void AddSingularizingTableNameConvention(this ModelBuilder modelBuilder)
+    public static void AddSingularizeTableNameConvention(this ModelBuilder modelBuilder)
     {
         Pluralizer pluralizer = new Pluralizer();
         foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
@@ -25,7 +25,7 @@ public static class ModelBuilderExtensions
     /// Pluralizing table name like Post to Posts or Person to People
     /// </summary>
     /// <param name="modelBuilder"></param>
-    public static void AddPluralizingTableNameConvention(this ModelBuilder modelBuilder)
+    public static void AddPluralizeTableNameConvention(this ModelBuilder modelBuilder)
     {
         Pluralizer pluralizer = new Pluralizer();
         foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
