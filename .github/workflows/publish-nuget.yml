@@ -3,43 +3,42 @@ name: Publish NuGet Package
 on:
   push:
     tags:
-      - 'v*.*.*' # فقط زمانی اجرا میشه که tag مثل v1.2.3 اضافه بشه
+      - 'v*.*.*'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
-          10.0.100-preview.4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
 
-    - name: Extract version from tag
-      id: tag
-      run: |
-        echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      - name: Extract version from tag
+        id: tag
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
 
-    - name: Pack NuGet
-      run: |
-        dotnet pack --configuration Release \
-          -p:PackageVersion=${{ steps.tag.outputs.VERSION }} \
-          --no-build -o out
+      - name: Pack NuGet
+        run: |
+          dotnet pack --configuration Release \
+            -p:PackageVersion=${{ steps.tag.outputs.VERSION }} \
+            --no-build -o out
 
-    - name: Push to NuGet
-      run: |
-        dotnet nuget push out/*.nupkg \
-          --api-key ${{ secrets.NUGET_API_KEY }} \
-          --source https://api.nuget.org/v3/index.json
+      - name: Push to NuGet
+        if: success() && steps.tag.outputs.VERSION != ''
+        run: |
+          dotnet nuget push out/*.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json
