@@ -1,35 +1,41 @@
-mode: ContinuousDelivery
-
+mode: ContinuousDeployment
 branches:
   main:
     regex: ^main$
     increment: Minor
-    prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-    tag: ''
-
+    prevent-increment-of-merged-branch-version: true
+    is-mainline: true
+    pre-release-weight: 0
   develop:
     regex: ^develop$
     increment: Patch
-    tag: 'beta'
-
+    track-merge-target: false
+    pre-release-weight: 3000
+    source-branches:
+      - main
+      - release
   feature:
-    regex: ^feature[/-]
+    regex: ^features?[/-]
     increment: Patch
-    tag: 'alpha'
-
+    source-branches:
+      - develop
   bugfix:
-    regex: ^bugfix[/-]
+    regex: ^bugfix(es)?[/-]
     increment: Patch
-    tag: 'alpha'
-
+    source-branches:
+      - develop
   release:
-    regex: ^release[/-]
+    regex: ^release(s)?[/-]
+    increment: Minor
+    source-branches:
+      - develop
+  hotfix:
+    regex: ^hotfix(es)?[/-]
     increment: Patch
-    tag: 'rc'
-
+    source-branches:
+      - main
 ignore:
   sha: []
-
+merge-message-strategy: MergeMessage
 commit-message-incrementing: Enabled
-
