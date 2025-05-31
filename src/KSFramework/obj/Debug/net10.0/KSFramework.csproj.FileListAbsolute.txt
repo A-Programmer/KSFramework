@@ -1,0 +1,12 @@
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/KSFramework.csproj.AssemblyReference.cache
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/KSFramework.GeneratedMSBuildEditorConfig.editorconfig
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/KSFramework.AssemblyInfoInputs.cache
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/KSFramework.AssemblyInfo.cs
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/KSFramework.csproj.CoreCompileInputs.cache
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/bin/Debug/net10.0/KSFramework.deps.json
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/bin/Debug/net10.0/KSFramework.dll
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/bin/Debug/net10.0/KSFramework.pdb
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/KSFramework.dll
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/refint/KSFramework.dll
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/KSFramework.pdb
+/Users/sadin/Projects/Personal Projects/NugetPackages/KSFramework/src/KSFramework/obj/Debug/net10.0/ref/KSFramework.dll
