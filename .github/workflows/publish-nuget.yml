@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*.*.*'
 
 jobs:
   publish:
@@ -15,20 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup .NET SDKs
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: |
-            8.0.x
-            10.0.100-preview.4.25258.110
-
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.11.0
-        with:
-          versionSpec: '5.12.0'
-
-      - name: Use GitVersion
-        uses: gittools/actions/gitversion/execute@v0.11.0
+          dotnet-version: 8.0.x
 
       - name: Restore dependencies
         run: dotnet restore
@@ -37,14 +25,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Pack NuGet
-        run: |
-          dotnet pack --configuration Release \
-            -p:PackageVersion=${{ steps.gitversion.outputs.NuGetVersionV2 }} \
-            --no-build -o out
+        run: dotnet pack --configuration Release --no-build -o out
 
       - name: Push to NuGet
-        if: success()
-        run: |
-          dotnet nuget push out/*.nupkg \
-            --api-key ${{ secrets.NUGET_API_KEY }} \
-            --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push out/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
