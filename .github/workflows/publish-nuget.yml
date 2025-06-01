@@ -2,47 +2,58 @@ name: Publish NuGet Package
 
 on:
   push:
-    branches:
-      - main
     tags:
-      - 'v*.*.*'
+      - 'v*.*.*' # فقط زمانی اجرا شود که یک تگ با فرمت vX.Y.Z پوش شود
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # یک شرط اضافه برای اطمینان از اینکه فقط برای تگ‌ها اجرا می‌شود (اختیاری چون trigger اصلی همین کار را می‌کند)
+    # if: startsWith(github.ref, 'refs/tags/')
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup .NET SDKs
-        uses: actions/setup-dotnet@v4
+        uses: actions/checkout@v4 # استفاده از نسخه جدیدتر
         with:
-          dotnet-version: |
-            8.0.x
-            10.0.x
+          fetch-depth: 0 # بسیار مهم برای GitVersion
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4 # استفاده از نسخه جدیدتر
+        with:
+          dotnet-version: 8.0.x # یا هر نسخه‌ای که پروژه شما نیاز دارد. اگر فقط یکی لازم است، دومی را حذف کنید.
+          # اگر پروژه شما به 10.0.x هم نیاز دارد، آن را نگه دارید:
+          # dotnet-version: |
+          # 8.0.x
+          # 10.0.x # توجه: .NET 10 هنوز منتشر نشده، احتمالا منظورتان .NET Core 3.1 یا .NET 6/7 بوده؟ یا شاید یک نسخه preview؟
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.11.0
+        uses: gittools/actions/gitversion/setup@v1.1.1 # نسخه جدیدتر اکشن
+        with:
+          versionSpec: '5.x' # مشخص کردن نسخه GitVersion CLI
 
-      - name: Use GitVersion
-        uses: gittools/actions/gitversion/execute@v0.11.0
+      - name: Determine Version using GitVersion
+        id: gitversion # <<<<< اضافه کردن ID برای ارجاع به خروجی
+        uses: gittools/actions/gitversion/execute@v1.1.1 # نسخه جدیدتر اکشن
 
       - name: Restore dependencies
-        run: dotnet restore
+        # اگر فایل csproj در روت نیست، مسیر را مشخص کنید: e.g., src/MyPackage/MyPackage.csproj
+        run: dotnet restore YourProject.csproj # <--- مسیر فایل csproj خود را جایگزین کنید
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        # اگر فایل csproj در روت نیست، مسیر را مشخص کنید
+        run: dotnet build YourProject.csproj --configuration Release --no-restore -p:Version=${{ steps.gitversion.outputs.NuGetVersionV2 }} # <--- مسیر فایل csproj و استفاده از نسخه
 
       - name: Pack NuGet
+        # اگر فایل csproj در روت نیست، مسیر را مشخص کنید
         run: |
-          dotnet pack --configuration Release \
+          dotnet pack YourProject.csproj --configuration Release \
             -p:PackageVersion=${{ steps.gitversion.outputs.NuGetVersionV2 }} \
-            --no-build -o out
+            --no-build -o ./out # <--- مسیر فایل csproj خود را جایگزین کنید
 
       - name: Push to NuGet
-        if: success()
+        # if: success() # این شرط به طور پیش‌فرض وجود دارد، اگر مراحل قبلی موفق باشند این مرحله اجرا می‌شود
         run: |
-          dotnet nuget push out/*.nupkg \
+          dotnet nuget push ./out/*.nupkg \
             --api-key ${{ secrets.NUGET_API_KEY }} \
-            --source https://api.nuget.org/v3/index.json
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate # جلوگیری از خطا در صورت وجود نسخه تکراری
