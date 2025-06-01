@@ -24,8 +24,6 @@ jobs:
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0.11.0
-        with:
-          versionSpec: '5.13.0'
 
       - name: Use GitVersion
         uses: gittools/actions/gitversion/execute@v0.11.0
