@@ -3,9 +3,9 @@ name: Publish NuGet Package
 on:
   push:
     branches:
-      - main         # وقتی روی برنچ main پوش میشه
+      - main
     tags:
-      - 'v*.*.*'     # یا وقتی تگ با الگوی vX.Y.Z ساخته میشه
+      - 'v*.*.*'
 
 jobs:
   publish:
@@ -15,21 +15,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup .NET
+      - name: Setup .NET SDKs
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             8.0.x
-            10.0.x 
+            10.0.100-preview.4 # اگر نیاز به دات‌نت ۱۰ داری
 
-      - name: Setup GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.12
+      - name: Install and run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.12
         with:
           versionSpec: '5.x'
-
-      - name: Get version info
-        id: gitversion
-        run: gitversion /output json /showvariable NuGetVersionV2
 
       - name: Restore dependencies
         run: dotnet restore
@@ -44,7 +41,7 @@ jobs:
             --no-build -o out
 
       - name: Push to NuGet
-        if: success() && steps.gitversion.outputs.NuGetVersionV2 != ''
+        if: success()
         run: |
           dotnet nuget push out/*.nupkg \
             --api-key ${{ secrets.NUGET_API_KEY }} \
