@@ -22,11 +22,14 @@ jobs:
             8.0.x
             10.0.x
 
-      - name: Install and run GitVersion
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.12
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.12
         with:
           versionSpec: '5.x'
+
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.12
 
       - name: Restore dependencies
         run: dotnet restore
