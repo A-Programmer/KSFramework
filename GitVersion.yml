@@ -2,40 +2,47 @@ mode: ContinuousDeployment
 branches:
   main:
     regex: ^main$
+    tag: ''
     increment: Minor
-    track-merge-target: false
     prevent-increment-of-merged-branch-version: true
-    is-mainline: true
-    pre-release-weight: 0
-  develop:
-    regex: ^develop$
-    increment: Patch
     track-merge-target: false
-    pre-release-weight: 3000
-    source-branches:
-      - main
-      - release
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: true
+    pre-release-weight: 55000
+  release:
+    regex: ^releases?[/-]
+    mode: ContinuousDelivery
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: true
+    is-mainline: false
+    pre-release-weight: 30000
   feature:
     regex: ^features?[/-]
-    increment: Patch
-    source-branches:
-      - develop
-  bugfix:
-    regex: ^bugfix(es)?[/-]
-    increment: Patch
-    source-branches:
-      - develop
-  release:
-    regex: ^release(s)?[/-]
+    mode: ContinuousDelivery
+    tag: useBranchName
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false
+    pre-release-weight: 30000
+  develop:
+    regex: ^dev(elop)?(ment)?$
+    mode: ContinuousDeployment
+    tag: alpha
     increment: Minor
-    source-branches:
-      - develop
-  hotfix:
-    regex: ^hotfix(es)?[/-]
-    increment: Patch
-    source-branches:
-      - main
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: true
+    is-release-branch: false
+    is-mainline: false
+    pre-release-weight: 0
 ignore:
   sha: []
-merge-message-strategy: MergeMessage
-commit-message-incrementing: Enabled
+merge-message-formats: {}
