@@ -8,7 +8,6 @@
   
   <PropertyGroup>
     <PackageId>KSFramework</PackageId>
-    <Version>1.4.9</Version>
     <Authors>Kamran Sadin</Authors>
     <Company>Sadin</Company>
     <CopyRight>Copyright (c) 2022 SadinCo.</CopyRight>
