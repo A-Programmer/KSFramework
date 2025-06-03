@@ -18,7 +18,8 @@ public static class RegisterMediatorServices
     /// <returns>The service collection.</returns>
     public static IServiceCollection AddKSMediator(this IServiceCollection services, params Assembly[] assemblies)
     {
-        services.AddSingleton<IMediator, Mediator>();
+        services.AddScoped<IMediator, Mediator>();
+        services.AddScoped<ISender>(sp => sp.GetRequiredService<IMediator>());
 
         services.Scan(scan => scan
             .FromAssemblies(assemblies)

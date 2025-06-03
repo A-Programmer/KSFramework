@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using KSFramework.Messaging.Abstraction;
-using KSFramework.Messaging.Behaviors;
-using KSFramework.Messaging.Configuration;
+using KSFramework.Messaging.Extensions;
 using KSFramework.Messaging.Samples;
 using Microsoft.Extensions.DependencyInjection;
 
