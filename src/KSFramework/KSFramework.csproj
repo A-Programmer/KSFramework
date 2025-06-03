@@ -28,8 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-<!--    TODO: To be removed-->
-<!--    <PackageReference Include="MediatR" Version="12.5.0" />-->
     <PackageReference Include="FluentValidation" Version="12.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
