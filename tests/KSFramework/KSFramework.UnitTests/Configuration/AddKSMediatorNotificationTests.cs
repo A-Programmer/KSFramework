@@ -1,5 +1,5 @@
 using KSFramework.Messaging.Abstraction;
-using KSFramework.Messaging.Configuration;
+using KSFramework.Messaging.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KSFramework.UnitTests.Configuration;
