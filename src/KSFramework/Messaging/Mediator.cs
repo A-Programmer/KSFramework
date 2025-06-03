@@ -203,18 +203,51 @@ public class Mediator : IMediator
         await handlerDelegate();
     }
     
-    public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<TResponse> CreateStream<TResponse>(
+        IStreamRequest<TResponse> request,
+        CancellationToken cancellationToken = default)
     {
-        var handlerType = typeof(IStreamRequestHandler<,>).MakeGenericType(request.GetType(), typeof(TResponse));
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        var requestType = request.GetType();
+        var responseType = typeof(TResponse);
+
+        // Resolve the handler
+        var handlerType = typeof(IStreamRequestHandler<,>).MakeGenericType(requestType, responseType);
         var handler = _serviceProvider.GetService(handlerType);
 
         if (handler == null)
-            throw new InvalidOperationException($"No stream handler registered for {request.GetType().Name}");
+            throw new InvalidOperationException($"No stream handler registered for {requestType.Name}");
 
-        var method = handlerType.GetMethod("Handle");
+        var handleMethod = handlerType.GetMethod("Handle");
+        if (handleMethod == null)
+            throw new InvalidOperationException("Handler does not implement expected Handle method.");
 
-        var result = (IAsyncEnumerable<TResponse>)method.Invoke(handler, new object[] { request, cancellationToken });
+        // Build the final handler delegate
+        StreamHandlerDelegate<TResponse> handlerDelegate = () =>
+        {
+            var result = handleMethod.Invoke(handler, new object[] { request, cancellationToken });
+            return (IAsyncEnumerable<TResponse>)result!;
+        };
 
-        return result;
+        // Resolve pipeline behaviors
+        var behaviorType = typeof(IStreamPipelineBehavior<,>).MakeGenericType(requestType, responseType);
+        var behaviors = _serviceProvider.GetServices(behaviorType).Reverse().ToList();
+
+        // Compose behaviors
+        foreach (var behavior in behaviors)
+        {
+            var current = behavior;
+            var next = handlerDelegate;
+            handlerDelegate = () =>
+            {
+                var method = behavior.GetType().GetMethod("Handle");
+                return (IAsyncEnumerable<TResponse>)method.Invoke(current, new object[] { request, cancellationToken, next })!;
+            };
+        }
+
+        // Execute pipeline
+        return handlerDelegate();
     }
 }

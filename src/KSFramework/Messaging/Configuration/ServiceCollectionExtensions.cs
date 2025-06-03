@@ -1,52 +1,47 @@
 using KSFramework.Messaging.Abstraction;
-using KSFramework.Messaging.Behaviors;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace KSFramework.Messaging.Configuration;
-
-/// <summary>
-/// Extension methods to register messaging components into the service collection.
-/// </summary>
-public static class ServiceCollectionExtensions
+namespace KSFramework.Messaging.Configuration
 {
     /// <summary>
-    /// Adds messaging components (Mediator, Handlers, Behaviors, Processors) to the service collection.
+    /// Extension methods to register messaging components into the service collection.
     /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <param name="assemblies">Assemblies to scan for handlers.</param>
-    /// <returns>The updated service collection.</returns>
-    public static IServiceCollection AddMessaging(this IServiceCollection services, params Assembly[] assemblies)
+    public static class ServiceCollectionExtensions
     {
-        services.AddScoped<IMediator, Mediator>();
-        services.AddScoped<ISender>(sp => sp.GetRequiredService<IMediator>());
+        /// <summary>
+        /// Registers mediator handlers and behaviors from specified assemblies with automatic discovery.
+        /// </summary>
+        public static IServiceCollection AddKSMediator(this IServiceCollection services, params Assembly[] assemblies)
+        {
+            services.AddScoped<IMediator, Mediator>();
+            services.AddScoped<ISender>(sp => sp.GetRequiredService<IMediator>());
 
-        services.Scan(scan => scan
-            .FromAssemblies(assemblies)
-            .AddClasses(classes => classes.AssignableTo(typeof(IRequestHandler<,>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-            .AddClasses(classes => classes.AssignableTo(typeof(INotificationHandler<>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-            .AddClasses(classes => classes.AssignableTo(typeof(IStreamRequestHandler<,>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-            .AddClasses(classes => classes.AssignableTo(typeof(IPipelineBehavior<,>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-            .AddClasses(classes => classes.AssignableTo(typeof(IRequestPreProcessor<>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-            .AddClasses(classes => classes.AssignableTo(typeof(IRequestPostProcessor<,>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-        );
-        
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehavior<,>));
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestProcessorBehavior<,>));
+            services.Scan(scan => scan
+                .FromAssemblies(assemblies)
 
-        return services;
+                // Request Handlers
+                .AddClasses(c => c.AssignableTo(typeof(IRequestHandler<,>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+
+                // Notification Handlers
+                .AddClasses(c => c.AssignableTo(typeof(INotificationHandler<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+
+                // Pipeline Behaviors
+                .AddClasses(c => c.AssignableTo(typeof(IPipelineBehavior<,>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+
+                // Notification Behaviors
+                .AddClasses(c => c.AssignableTo(typeof(INotificationBehavior<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime()
+            );
+
+            return services;
+        }
     }
 }
