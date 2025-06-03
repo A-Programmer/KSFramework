@@ -1,4 +1,4 @@
-using MediatR;
+using KSFramework.Messaging.Abstraction;
 
 namespace KSFramework.Domain;
 public interface IDomainEvent : INotification
