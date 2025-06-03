@@ -1,6 +1,16 @@
+using KSFramework.Messaging.Abstraction;
+
 namespace KSFramework.Messaging.Samples;
 
-public class UserRegisteredNotification
+/// <summary>
+/// Notification that is triggered when a user registers.
+/// </summary>
+public class UserRegisteredNotification : INotification
 {
-    
+    public string Username { get; }
+
+    public UserRegisteredNotification(string username)
+    {
+        Username = username;
+    }
 }

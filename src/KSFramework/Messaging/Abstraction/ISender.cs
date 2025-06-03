@@ -1,4 +1,4 @@
-namespace KSFramework.Messaging;
+namespace KSFramework.Messaging.Abstraction;
 
 /// <summary>
 /// Represents a sender that can send requests and return responses.

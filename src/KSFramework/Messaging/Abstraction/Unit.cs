@@ -1,6 +1,6 @@
 namespace KSFramework.Messaging.Abstraction;
 
-public struct Unit
+public readonly struct Unit
 {
-    
+    public static readonly Unit Value = new();
 }
