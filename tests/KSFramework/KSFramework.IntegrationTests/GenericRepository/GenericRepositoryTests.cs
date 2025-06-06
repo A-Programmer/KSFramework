@@ -28,9 +28,6 @@ public class GenericRepositoryTests : IntegrationTestBase
     protected override void ConfigureServices(IServiceCollection services)
     {
         base.ConfigureServices(services);
-
-
-
         services.AddScoped<IGenericRepository<TestEntity>, TestGenericRepository>();
     }
 

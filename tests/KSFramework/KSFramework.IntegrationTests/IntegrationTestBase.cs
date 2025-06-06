@@ -39,11 +39,7 @@ public abstract class IntegrationTestBase : IDisposable
             options.UseInMemoryDatabase("TestDatabase");
         });
 
-
-
-
-
-        services.AddScoped<DbContext, TestDbContext>();
+        services.AddScoped(provider => (DbContext)provider.GetRequiredService<TestDbContext>());
 
         // Register UnitOfWork and IUnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();

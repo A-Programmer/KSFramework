@@ -1,29 +1,12 @@
 using System.Diagnostics;
 using KSFramework.GenericRepository;
-using KSFramework.KSDomain.AggregatesHelper;
+using KSFramework.IntegrationTests;
 using KSFramework.IntegrationTests.GenericRepository;
-using KSFramework.KSDomain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace KSFramework.IntegrationTests.Performance;
-
 public class PerformanceTests : IntegrationTestBase
 {
-    private readonly IGenericRepository<TestEntity> _repository;
-    private readonly TestDbContext _dbContext;
-    private readonly Stopwatch _stopwatch;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public PerformanceTests()
-    {
-        using var scope = CreateScope();
-        _dbContext = scope.ServiceProvider.GetRequiredService<TestDbContext>();
-        _repository = scope.ServiceProvider.GetRequiredService<IGenericRepository<TestEntity>>();
-        _stopwatch = new Stopwatch();
-        _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-    }
-
     protected override void ConfigureServices(IServiceCollection services)
     {
         base.ConfigureServices(services);
@@ -37,9 +20,13 @@ public class PerformanceTests : IntegrationTestBase
     [Fact]
     public async Task BulkInsert_ShouldCompleteWithinTimeLimit()
     {
-        // Arrange
+        using var scope = CreateScope();
+        var repository = scope.ServiceProvider.GetRequiredService<IGenericRepository<TestEntity>>();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        var stopwatch = new Stopwatch();
+
         const int numberOfEntities = 1000;
-        const int acceptableMilliseconds = 2000; // 2 seconds
+        const int acceptableMilliseconds = 2000;
         var entities = Enumerable.Range(1, numberOfEntities)
             .Select(i => new TestEntity
             {
@@ -48,88 +35,78 @@ public class PerformanceTests : IntegrationTestBase
             })
             .ToList();
 
-        // Act
-        _stopwatch.Start();
-
+        stopwatch.Start();
         foreach (var entity in entities)
         {
-            await _repository.AddAsync(entity);
+            await repository.AddAsync(entity);
         }
-        await _unitOfWork.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
+        stopwatch.Stop();
 
-        _stopwatch.Stop();
-
-        // Assert
-        Assert.True(_stopwatch.ElapsedMilliseconds <= acceptableMilliseconds,
-            $"Bulk insert took {_stopwatch.ElapsedMilliseconds}ms, which is more than acceptable {acceptableMilliseconds}ms");
+        Assert.True(stopwatch.ElapsedMilliseconds <= acceptableMilliseconds,
+            $"Bulk insert took {stopwatch.ElapsedMilliseconds}ms, which is more than acceptable {acceptableMilliseconds}ms");
     }
 
     [Fact]
     public async Task QueryPerformance_ShouldCompleteWithinTimeLimit()
     {
-        // Arrange
+        using var scope = CreateScope();
+        var repository = scope.ServiceProvider.GetRequiredService<IGenericRepository<TestEntity>>();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        var stopwatch = new Stopwatch();
+
         const int numberOfQueries = 100;
-        const int acceptableMilliseconds = 1000; // 1 second
+        const int acceptableMilliseconds = 1000;
         var entity = new TestEntity
         {
             Id = Guid.NewGuid(),
             Name = "Performance Query Test Entity"
         };
-        await _repository.AddAsync(entity);
-        await _unitOfWork.SaveChangesAsync();
+        await repository.AddAsync(entity);
+        await unitOfWork.SaveChangesAsync();
 
-        // Act
-        _stopwatch.Start();
-
+        stopwatch.Start();
         for (int i = 0; i < numberOfQueries; i++)
         {
-            await _repository.GetByIdAsync(entity.Id);
+            await repository.GetByIdAsync(entity.Id);
         }
+        stopwatch.Stop();
 
-        _stopwatch.Stop();
-
-        // Assert
-        Assert.True(_stopwatch.ElapsedMilliseconds <= acceptableMilliseconds,
-            $"Multiple queries took {_stopwatch.ElapsedMilliseconds}ms, which is more than acceptable {acceptableMilliseconds}ms");
+        Assert.True(stopwatch.ElapsedMilliseconds <= acceptableMilliseconds,
+            $"Multiple queries took {stopwatch.ElapsedMilliseconds}ms, which is more than acceptable {acceptableMilliseconds}ms");
     }
 
     [Fact]
     public async Task ConcurrentOperations_ShouldHandleEfficiently()
     {
-        // Arrange
         const int numberOfTasks = 50;
-        const int acceptableMilliseconds = 3000; // 3 seconds
+        const int acceptableMilliseconds = 3000;
+        var stopwatch = new Stopwatch();
         var tasks = new List<Task>();
 
-        // Act
-        _stopwatch.Start();
-
+        stopwatch.Start();
         for (int i = 0; i < numberOfTasks; i++)
         {
             tasks.Add(Task.Run(async () =>
             {
-                using (var scope = CreateScope())
-                {
-                    var scopedUnitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-                    var scopedRepository = scope.ServiceProvider.GetRequiredService<IGenericRepository<TestEntity>>();
+                using var scope = CreateScope();
+                var scopedRepository = scope.ServiceProvider.GetRequiredService<IGenericRepository<TestEntity>>();
+                var scopedUnitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-                    var entity = new TestEntity
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = $"Concurrent Test Entity {Guid.NewGuid()}"
-                    };
-                    await scopedRepository.AddAsync(entity);
-                    await scopedUnitOfWork.SaveChangesAsync();
-                    await scopedRepository.GetByIdAsync(entity.Id);
-                }
+                var entity = new TestEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Name = $"Concurrent Test Entity {Guid.NewGuid()}"
+                };
+                await scopedRepository.AddAsync(entity);
+                await scopedUnitOfWork.SaveChangesAsync();
+                await scopedRepository.GetByIdAsync(entity.Id);
             }));
         }
-
         await Task.WhenAll(tasks);
-        _stopwatch.Stop();
+        stopwatch.Stop();
 
-        // Assert
-        Assert.True(_stopwatch.ElapsedMilliseconds <= acceptableMilliseconds,
-            $"Concurrent operations took {_stopwatch.ElapsedMilliseconds}ms, which is more than acceptable {acceptableMilliseconds}ms");
+        Assert.True(stopwatch.ElapsedMilliseconds <= acceptableMilliseconds,
+            $"Concurrent operations took {stopwatch.ElapsedMilliseconds}ms, which is more than acceptable {acceptableMilliseconds}ms");
     }
 }

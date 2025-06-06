@@ -1,5 +1,6 @@
 using KSFramework.KSMessaging;
 using KSFramework.KSMessaging.Abstraction;
+using KSFramework.KSMessaging.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KSFramework.IntegrationTests.Messaging;
@@ -40,9 +41,7 @@ public class MediatorTests : IntegrationTestBase
     {
         base.ConfigureServices(services);
 
-        services.AddScoped<ICommandHandler<TestCommand, string>, TestCommandHandler>();
-        services.AddScoped<IQueryHandler<TestQuery, string>, TestQueryHandler>();
-        services.AddScoped<IMediator, Mediator>();
+        services.AddKSMediator(typeof(MediatorTests).Assembly);
     }
 
     [Fact]
