@@ -1,11 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <PackageId>KSFramework</PackageId>
     <Authors>Kamran Sadin</Authors>
@@ -30,15 +32,19 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.3.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pluralize.NET" Version="1.0.2" />
     <PackageReference Include="Scrutor" Version="6.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="KSMessaging\Configuration\" />
   </ItemGroup>
 
 </Project>

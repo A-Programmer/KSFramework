@@ -1,4 +1,4 @@
-using KSFramework.Messaging.Abstraction;
+using KSFramework.KSMessaging.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 namespace KSFramework.UnitTests.Stream.CreateStream;
 
@@ -17,7 +17,7 @@ public class MediatorCreateStreamTests
 
     /// <summary>
     /// A handler for <see cref="StreamRequest"/> that streams integers from 1 to Count.
-/// </summary>
+    /// </summary>
     public class StreamHandler : IStreamRequestHandler<StreamRequest, int>
     {
         public async IAsyncEnumerable<int> Handle(StreamRequest request, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ public class MediatorCreateStreamTests
 
     /// <summary>
     /// A simple logging behavior for streams that logs before and after streaming.
-/// </summary>
+    /// </summary>
     public class LoggingBehavior : IStreamPipelineBehavior<StreamRequest, int>
     {
         public List<string> Logs { get; } = new();
@@ -60,7 +60,7 @@ public class MediatorCreateStreamTests
 
         var behavior = new LoggingBehavior();
 
-        services.AddSingleton<IMediator, KSFramework.Messaging.Mediator>();
+        services.AddSingleton<IMediator, KSFramework.KSMessaging.Mediator>();
         services.AddScoped<IStreamRequestHandler<StreamRequest, int>, StreamHandler>();
         services.AddScoped<IStreamPipelineBehavior<StreamRequest, int>>(_ => behavior);
 

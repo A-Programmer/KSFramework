@@ -1,4 +1,4 @@
-using KSFramework.Messaging.Abstraction;
+using KSFramework.KSMessaging.Abstraction;
 
 namespace KSFramework.UnitTests.Mediator.Publish;
 

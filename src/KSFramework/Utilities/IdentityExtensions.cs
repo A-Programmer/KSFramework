@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -16,17 +16,17 @@ public static class IdentityExtensions
         return claimsIdentity?.FindFirstValue(claimType);
     }
 
-    public static string? GetUserId(this IIdentity identity)
+    public static string? GetUserId(this IIdentity? identity)
     {
         return identity?.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
-    public static T GetUserId<T>(this IIdentity identity) where T : IConvertible
+    public static T? GetUserId<T>(this IIdentity? identity) where T : IConvertible
     {
         var userId = identity?.GetUserId();
         return userId.HasValue()
             ? (T)Convert.ChangeType(userId, typeof(T), CultureInfo.InvariantCulture)
-            : default(T);
+            : default;
     }
 
     public static string? GetUserName(this IIdentity identity)

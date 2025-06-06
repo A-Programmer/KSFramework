@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Net;
 using System.Text;
@@ -74,7 +74,7 @@ public static class StringExtensions
         return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToLower();
     }
 
-    public static bool HasValue(this string value, bool ignoreWhiteSpace = true)
+    public static bool HasValue(this string? value, bool ignoreWhiteSpace = true)
     {
         return ignoreWhiteSpace ? !string.IsNullOrWhiteSpace(value) : !string.IsNullOrEmpty(value);
     }
@@ -101,8 +101,8 @@ public static class StringExtensions
 
     public static string ToCurrency(this int value)
     {
-        //fa-IR => current culture currency symbol => ریال
-        //123456 => "123,123ریال"
+        //fa-IR => current culture currency symbol
+//123456 => "123,123"
         return value.ToString("C0");
     }
 
@@ -180,11 +180,13 @@ public static class StringExtensions
             .Replace("ي", "ی")
             .Replace(" ", " ")
             .Replace("‌", " ")
-            .Replace("ھ", "ه");//.Replace("ئ", "ی");
+            .Replace("ھ", "ه");
     }
 
-    public static string CleanString(this string str)
+    public static string? CleanString(this string? str)
     {
+        if (string.IsNullOrEmpty(str))
+            return null;
         return str.Trim().FixPersianChars().Fa2En().NullIfEmpty();
     }
 
@@ -222,9 +224,11 @@ public static class StringExtensions
     }
     #endregion
 
-    public static string NullIfEmpty(this string str)
+    public static string? NullIfEmpty(this string? str)
     {
-        return str?.Length == 0 ? null : str;
+        if (string.IsNullOrEmpty(str))
+            return null;
+        return str;
     }
 
     public static string HtmlToPlainText(this string str)

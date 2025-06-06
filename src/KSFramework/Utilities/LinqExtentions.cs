@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace KSFramework.Utilities;
 public static class ExtendLinq
@@ -39,5 +39,5 @@ public class RequestCollection
 public class ResponseCollection<TEntity>
 {
     public int Count { get; set; }
-    public List<TEntity> Result { get; set; }
+    public List<TEntity> Result { get; set; } = new List<TEntity>();
 }

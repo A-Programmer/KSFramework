@@ -1,29 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="src/KSFramework/Api/ApiResult.cs">
-    <Files>
-      <File FileName="src/KSFramework/Api/ApiResult.cs" Line="1" Column="1" />
-    </Files>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="KSFramework" expanded="True">
-            <Node name="src" expanded="True">
-              <Node name="KSFramework" expanded="True">
-                <Node name="Dependencies" expanded="True">
-                  <Node name="PackageDependencies" expanded="True" />
-                </Node>
-                <Node name="Api" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
+          <Node name="KSFramework" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

@@ -16,6 +16,8 @@
 - ✅ Scrutor-based automatic registration
 - ✅ File-scoped namespaces and XML documentation for every component
 - ✅ Full unit test coverage using xUnit and Moq
+- ✅ Swagger/OpenAPI documentation support
+- ✅ Comprehensive XML documentation
 
 ---
 
@@ -24,19 +26,71 @@
 Add the package reference (once published):
 
 ```bash
-dotnet add package KSFramework.Messaging
-dotnet add package KSFramework.Data
+dotnet add package KSFramework.KSMessaging
+dotnet add package KSFramework.KSData
 ```
 
 Or reference the source projects directly in your solution.
+
+## 📚 API Documentation
+
+### Swagger/OpenAPI Setup
+
+1. Add Swagger configuration in your `Program.cs`:
+```csharp
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Your API Name",
+        Version = "v1",
+        Description = "API Documentation"
+    });
+    
+    // Include XML comments
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
+```
+
+2. Enable Swagger UI in your application:
+```csharp
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+});
+```
+
+### XML Documentation
+
+The framework is configured to generate XML documentation. Add XML comments to your classes and methods:
+
+```csharp
+/// <summary>
+/// Represents a generic repository for entity operations.
+/// </summary>
+/// <typeparam name="TEntity">The type of the entity.</typeparam>
+public interface IGenericRepository<TEntity> where TEntity : class
+{
+    /// <summary>
+    /// Retrieves an entity by its identifier.
+    /// </summary>
+    /// <param name="id">The identifier of the entity.</param>
+    /// <returns>The entity if found; otherwise, null.</returns>
+    Task<TEntity> GetByIdAsync(object id);
+}
+```
 ⸻
 
 🧠 Project Structure  
 ```
 src/
-KSFramework.Messaging/           → Custom mediator, behaviors, contracts
-KSFramework.Data/                → Repository, UnitOfWork, Specification
-KSFramework.SharedKernel/        → Domain base types, entities, value objects
+KSFramework.KSMessaging/           → Custom mediator, behaviors, contracts
+KSFramework.KSData/                → Repository, UnitOfWork, Specification
+KSFramework.KSSharedKernel/        → Domain base types, entities, value objects
 
 tests/
 KSFramework.UnitTests/           → xUnit unit tests
