@@ -1,4 +1,4 @@
-using KSFramework.Messaging.Abstraction;
+using KSFramework.KSMessaging.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KSFramework.UnitTests.Mediator.Publish;
@@ -56,7 +56,7 @@ public class MediatorPublishTests
 
         services.AddSingleton<INotificationHandler<TestNotification>>(handler);
         services.AddLogging();
-        services.AddSingleton<IMediator, KSFramework.Messaging.Mediator>();
+        services.AddSingleton<IMediator, KSFramework.KSMessaging.Mediator>();
 
         var provider = services.BuildServiceProvider();
         var mediator = provider.GetRequiredService<IMediator>();
@@ -79,7 +79,7 @@ public class MediatorPublishTests
         services.AddSingleton<INotificationHandler<TestNotification>>(handler);
         services.AddSingleton<INotificationBehavior<TestNotification>>(behavior);
         services.AddLogging();
-        services.AddSingleton<IMediator, KSFramework.Messaging.Mediator>();
+        services.AddSingleton<IMediator, KSFramework.KSMessaging.Mediator>();
 
         var provider = services.BuildServiceProvider();
         var mediator = provider.GetRequiredService<IMediator>();

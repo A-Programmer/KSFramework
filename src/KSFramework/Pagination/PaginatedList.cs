@@ -37,8 +37,8 @@ public class PaginatedList<T> : List<T>
         }
     }
 
-    public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize,Expression<Func<T, bool>> where = null,
-                                                            string orderBy = "", bool desc = false)
+    public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize, Expression<Func<T, bool>>? where = null,
+                                                            string? orderBy = "", bool desc = false)
     {
         if(where is null) where = x => true;
         
@@ -59,8 +59,8 @@ public class PaginatedList<T> : List<T>
         return new PaginatedList<T>(items, count, pageIndex, pageSize);
     }
 
-    public static PaginatedList<T> Create(IQueryable<T> source, int pageIndex, int pageSize,Expression<Func<T, bool>> where = null,
-                                            string orderBy = "", bool desc = false)
+    public static PaginatedList<T> Create(IQueryable<T> source, int pageIndex, int pageSize, Expression<Func<T, bool>>? where = null,
+                                            string? orderBy = "", bool desc = false)
     {
         if(where is null) where = x => true;
         

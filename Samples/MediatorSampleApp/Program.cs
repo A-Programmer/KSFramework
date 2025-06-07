@@ -1,9 +1,8 @@
-﻿using System.Reflection;
+using System.Reflection;
 using FluentValidation;
-using KSFramework.Messaging.Abstraction;
-using KSFramework.Messaging.Behaviors;
-using KSFramework.Messaging.Configuration;
-using KSFramework.Messaging.Samples;
+using KSFramework.KSMessaging.Abstraction;
+using KSFramework.KSMessaging.Extensions;
+using KSFramework.KSMessaging.Samples;
 using Microsoft.Extensions.DependencyInjection;
 
 var services = new ServiceCollection();

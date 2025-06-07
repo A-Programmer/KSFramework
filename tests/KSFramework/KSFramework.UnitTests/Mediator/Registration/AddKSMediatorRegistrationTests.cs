@@ -1,5 +1,5 @@
-using KSFramework.Messaging.Abstraction;
-using KSFramework.Messaging.Configuration;
+using KSFramework.KSMessaging.Abstraction;
+using KSFramework.KSMessaging.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KSFramework.UnitTests.Mediator.Registration;

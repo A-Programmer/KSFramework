@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Pluralize.NET;
 using System.Reflection;
@@ -15,8 +15,11 @@ public static class ModelBuilderExtensions
         Pluralizer pluralizer = new Pluralizer();
         foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
         {
-            string tableName = entityType.GetTableName();
-            entityType.SetTableName(pluralizer.Singularize(tableName));
+            string? tableName = entityType.GetTableName();
+            if (tableName != null)
+            {
+                entityType.SetTableName(pluralizer.Singularize(tableName));
+            }
         }
     }
 
@@ -29,8 +32,11 @@ public static class ModelBuilderExtensions
         Pluralizer pluralizer = new Pluralizer();
         foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
         {
-            string tableName = entityType.GetTableName();
-            entityType.SetTableName(pluralizer.Pluralize(tableName));
+            string? tableName = entityType.GetTableName();
+            if (tableName != null)
+            {
+                entityType.SetTableName(pluralizer.Pluralize(tableName));
+            }
         }
     }
 
@@ -55,7 +61,7 @@ public static class ModelBuilderExtensions
     {
         foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
         {
-            IMutableProperty property = entityType.GetProperties().SingleOrDefault(p => p.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase));
+            var property = entityType.GetProperties().FirstOrDefault(p => p.Name.Equals(propertyName, StringComparison.OrdinalIgnoreCase));
             if (property != null && property.ClrType == propertyType)
                 property.SetDefaultValueSql(defaultValueSql);
         }
@@ -93,7 +99,8 @@ public static class ModelBuilderExtensions
                 if (iface.IsConstructedGenericType && iface.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>))
                 {
                     MethodInfo applyConcreteMethod = applyGenericMethod.MakeGenericMethod(iface.GenericTypeArguments[0]);
-                    applyConcreteMethod.Invoke(modelBuilder, new object[] { Activator.CreateInstance(type) });
+                    var instance = Activator.CreateInstance(type) ?? throw new InvalidOperationException($"Failed to create instance of type {type.FullName}");
+                    applyConcreteMethod.Invoke(modelBuilder, new object[] { instance });
                 }
             }
         }
