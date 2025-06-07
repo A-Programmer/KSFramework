@@ -1,17 +1,19 @@
 # KSFramework
 
-**KSFramework** is a lightweight, extensible .NET framework designed to accelerate clean architecture and domain-driven development. It offers generic repository support, pagination utilities, and helpful abstractions to simplify the implementation of enterprise-grade backend systems using modern .NET patterns.
+**KSFramework** is a modular and extensible .NET framework that simplifies the implementation of enterprise-grade applications using **Clean Architecture**, **DDD**, and **CQRS** patterns. It includes built-in support for Generic Repository, Unit of Work, and a custom MediatR-style messaging system.
 
 ---
 
 ## ✨ Features
 
-- 🧱 **Domain-Driven Design (DDD) Friendly**
-- 🧼 **Clean Architecture Support**
-- 🧰 **Generic Repository Pattern**
-- 📄 **Built-in Pagination Support**
-- 🧪 **Unit Testable Core Interfaces**
-- 🧩 **Customizable and Extensible by Design**
+- ✅ Clean Architecture and DDD-friendly structure
+- ✅ Generic Repository with constraint on AggregateRoots
+- ✅ Fully extensible Unit of Work pattern
+- ✅ Built-in Pagination utilities
+- ✅ Internal MediatR-like message dispatch system (KSMessaging)
+- ✅ Scrutor-based handler and behavior registration
+- ✅ Support for pipeline behaviors (logging, validation, etc.)
+- ✅ Strongly testable, loosely coupled abstractions
 
 ---
 
@@ -23,188 +25,116 @@ Install via NuGet:
 dotnet add package KSFramework
 ```
 
-Or via the Package Manager Console:
+---
 
-```powershell
-Install-Package KSFramework
-```
+## 🧰 Modules Overview
+
+- `KSFramework.KSDomain` — Domain primitives: `Entity`, `AggregateRoot`, `ValueObject`
+- `KSFramework.GenericRepository` — `Repository`, `UnitOfWork`, pagination support
+- `KSFramework.KSMessaging` — CQRS with internal MediatR-style handler resolver, behaviors, stream handling
 
 ---
 
-## 📂 Project Structure
+## ⚙️ Usage Overview
 
-The KSFramework package is modular and consists of:
-
-- `KSFramework.GenericRepository` — Contains generic repository interfaces and base implementations.
-- `KSFramework.Pagination` — Provides interfaces and classes for paginated queries.
-- `KSFramework.KSDomain` — Base types for entities, aggregate roots, and value objects.
-
----
-
-## 🚀 Getting Started
-
-### 1. Define Your Entities
+### 🧱 Register Services (Program.cs)
 
 ```csharp
-public class BlogPost
+builder.Services.AddKSMediator(typeof(Program).Assembly);
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+```
+
+### 🧪 Sample Command
+
+```csharp
+public record CreatePostCommand(string Title, string Content) : ICommand<Guid>;
+
+public class CreatePostHandler : ICommandHandler<CreatePostCommand, Guid>
 {
-    public int Id { get; set; }
-    public string Title { get; set; }
-    public string Content { get; set; }
-    public DateTime PublishedAt { get; set; }
+    private readonly IUnitOfWork _uow;
+
+    public CreatePostHandler(IUnitOfWork uow)
+    {
+        _uow = uow;
+    }
+
+    public async Task<Guid> Handle(CreatePostCommand request, CancellationToken cancellationToken)
+    {
+        var post = new BlogPost { Id = Guid.NewGuid(), Title = request.Title, Content = request.Content };
+        await _uow.GetRepository<BlogPost>().AddAsync(post);
+        await _uow.SaveChangesAsync();
+        return post.Id;
+    }
 }
 ```
 
-### 2. Setup Your DbContext
+---
+
+## 📚 Example: Blog with Newsletter
+
+### ✍️ Features
+
+- CRUD for Blog Posts using Commands/Queries
+- Subscriber registration using Notification pattern
+- Weekly newsletter dispatch via background service
+
+---
+
+### 🧩 Domain Layer
 
 ```csharp
-public class AppDbContext : DbContext
+public class BlogPost : AggregateRoot<Guid>
 {
-    public DbSet<BlogPost> BlogPosts { get; set; }
-
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-}
-```
-
-### 3. Create Your Repository
-
-You can use the generic repository directly:
-
-```csharp
-public class BlogPostRepository : Repository<BlogPost>
-{
-    public BlogPostRepository(AppDbContext context) : base(context) { }
-}
-```
-
-Or inject `IRepository<BlogPost>` if you're using dependency injection with Scrutor or your own DI container.
-
----
-
-## 🧪 Common Repository Operations
-
-```csharp
-await _repository.AddAsync(new BlogPost { Title = "Welcome", Content = "This is the first post." });
-
-var post = await _repository.GetByIdAsync(1);
-
-await _repository.UpdateAsync(post);
-
-await _repository.DeleteAsync(post);
-
-var allPosts = await _repository.GetAllAsync();
-
-var filtered = _repository.Find(p => p.PublishedAt > DateTime.UtcNow.AddDays(-30));
-```
-
----
-
-## 📘 Pagination Example
-
-```csharp
-var query = _repository.Query();
-var paginated = await query.PaginateAsync(pageNumber: 1, pageSize: 10);
-```
-
-`PaginateAsync` is an extension method provided by the `KSFramework.Pagination` namespace.
-
----
-
-## 📚 Full Example: Building a Blog with Weekly Newsletter
-
-### Project Overview
-
-This sample demonstrates how to build a simple blog platform using `KSFramework` with:
-
-- Post publishing
-- Subscriber registration
-- Weekly newsletter delivery to subscribers
-
----
-
-### Step 1: Define Entities
-
-```csharp
-public class BlogPost
-{
-    public int Id { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
     public DateTime PublishedAt { get; set; }
 }
 
-public class Subscriber
+public class Subscriber : Entity<Guid>
 {
-    public int Id { get; set; }
     public string Email { get; set; }
 }
 ```
 
 ---
 
-### Step 2: Repositories
+### 🧠 Application Commands
 
 ```csharp
-public class BlogPostRepository : Repository<BlogPost>
+public record SubscribeCommand(string Email) : ICommand;
+
+public class SubscribeHandler : ICommandHandler<SubscribeCommand>
 {
-    public BlogPostRepository(AppDbContext context) : base(context) { }
-}
+    private readonly IUnitOfWork _uow;
 
-public class SubscriberRepository : Repository<Subscriber>
-{
-    public SubscriberRepository(AppDbContext context) : base(context) { }
-}
-```
+    public SubscribeHandler(IUnitOfWork uow) => _uow = uow;
 
----
-
-### Step 3: API Controllers
-
-```csharp
-[ApiController]
-[Route("api/[controller]")]
-public class BlogPostsController : ControllerBase
-{
-    private readonly IRepository<BlogPost> _repository;
-
-    public BlogPostsController(IRepository<BlogPost> repository)
+    public async Task Handle(SubscribeCommand request, CancellationToken cancellationToken)
     {
-        _repository = repository;
-    }
-
-    [HttpGet]
-    public async Task<IEnumerable<BlogPost>> GetAll() => await _repository.GetAllAsync();
-
-    [HttpPost]
-    public async Task<IActionResult> Create(BlogPost post)
-    {
-        post.PublishedAt = DateTime.UtcNow;
-        await _repository.AddAsync(post);
-        return Ok(post);
+        var repo = _uow.GetRepository<Subscriber>();
+        await repo.AddAsync(new Subscriber { Email = request.Email });
+        await _uow.SaveChangesAsync();
     }
 }
 ```
 
 ---
 
-### Step 4: Subscription Controller
+### 🌐 API Controller
 
 ```csharp
 [ApiController]
 [Route("api/[controller]")]
 public class NewsletterController : ControllerBase
 {
-    private readonly IRepository<Subscriber> _subRepo;
+    private readonly ISender _sender;
 
-    public NewsletterController(IRepository<Subscriber> subRepo)
-    {
-        _subRepo = subRepo;
-    }
+    public NewsletterController(ISender sender) => _sender = sender;
 
     [HttpPost("subscribe")]
-    public async Task<IActionResult> Subscribe(string email)
+    public async Task<IActionResult> Subscribe([FromForm] string email)
     {
-        await _subRepo.AddAsync(new Subscriber { Email = email });
+        await _sender.Send(new SubscribeCommand(email));
         return Ok("Subscribed");
     }
 }
@@ -212,78 +142,53 @@ public class NewsletterController : ControllerBase
 
 ---
 
-### Step 5: Weekly Newsletter Job (Example)
-
-You can use [Hangfire](https://www.hangfire.io/) or any scheduler to run this task weekly:
+### 📨 Weekly Newsletter Job
 
 ```csharp
 public class WeeklyNewsletterJob
 {
-    private readonly IRepository<Subscriber> _subRepo;
-    private readonly IRepository<BlogPost> _postRepo;
+    private readonly IUnitOfWork _uow;
 
-    public WeeklyNewsletterJob(IRepository<Subscriber> subRepo, IRepository<BlogPost> postRepo)
+    public WeeklyNewsletterJob(IUnitOfWork uow) => _uow = uow;
+
+    public async Task SendAsync()
     {
-        _subRepo = subRepo;
-        _postRepo = postRepo;
-    }
+        var posts = (await _uow.GetRepository<BlogPost>().GetAllAsync())
+                    .Where(p => p.PublishedAt >= DateTime.UtcNow.AddDays(-7));
 
-    public async Task Send()
-    {
-        var lastWeek = DateTime.UtcNow.AddDays(-7);
-        var posts = (await _postRepo.GetAllAsync())
-                        .Where(p => p.PublishedAt > lastWeek)
-                        .ToList();
+        var subscribers = await _uow.GetRepository<Subscriber>().GetAllAsync();
 
-        var subscribers = await _subRepo.GetAllAsync();
-
-        foreach (var sub in subscribers)
+        foreach (var s in subscribers)
         {
-            // send email (via SMTP or 3rd party)
-            await EmailSender.Send(sub.Email, "Weekly Newsletter", RenderPosts(posts));
+            await EmailSender.Send(s.Email, "Your Weekly Digest", string.Join("
+
+", posts.Select(p => p.Title)));
         }
-    }
-
-    private string RenderPosts(IEnumerable<BlogPost> posts)
-    {
-        return string.Join("
-
-", posts.Select(p => $"{p.Title}
-{p.Content}"));
     }
 }
 ```
 
 ---
 
-## 📌 Roadmap
+## 🧪 Testing
 
-- [x] Generic Repository
-- [x] Pagination
-- [ ] Specification Pattern
-- [ ] Auditing Support
-- [ ] Integration with MediatR & CQRS
+- Handlers and pipelines are fully testable using unit tests
+- Use `KSFramework.UnitTests` project to validate handler behavior
+- Custom behaviors can be tested independently
 
 ---
 
-## 🤝 Contributing
+## 📌 Roadmap
 
-Contributions are welcome!
-
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
+- [x] Internal MediatR/CQRS support
+- [x] Pagination
+- [x] Unit of Work abstraction
+- [ ] ValidationBehavior
+- [ ] ExceptionHandlingBehavior
+- [ ] Domain Events integration
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## 🔗 Related Projects
-
-- [MediatR](https://github.com/jbogard/MediatR)
-- [Scrutor](https://github.com/khellang/Scrutor)
-- [Hangfire](https://www.hangfire.io/)
+Licensed under MIT.
