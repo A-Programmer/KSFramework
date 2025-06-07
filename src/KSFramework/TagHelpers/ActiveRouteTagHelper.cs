@@ -11,18 +11,18 @@ namespace KSFramework.TagHelpers
         private const string ActiveRouteClassValue = "active-route-class";
 
         [HtmlAttributeName(ActiveRouteClassValue)]
-        public string ActiveRouteCssClass { get; set; }
-        private IDictionary<string, string> _routeValues;
+        public string ActiveRouteCssClass { get; set; } = string.Empty;
+        private IDictionary<string, string>? _routeValues;
 
         /// <summary>The name of the action method.</summary>
         /// <remarks>Must be <c>null</c> if <see cref="P:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper.Route" /> is non-<c>null</c>.</remarks>
         [HtmlAttributeName("asp-action")]
-        public string Action { get; set; }
+        public string? Action { get; set; }
 
         /// <summary>The name of the controller.</summary>
         /// <remarks>Must be <c>null</c> if <see cref="P:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper.Route" /> is non-<c>null</c>.</remarks>
         [HtmlAttributeName("asp-controller")]
-        public string Controller { get; set; }
+        public string? Controller { get; set; }
 
         /// <summary>Additional parameters for the route.</summary>
         [HtmlAttributeName("asp-all-route-data", DictionaryAttributePrefix = "asp-route-")]
@@ -30,14 +30,10 @@ namespace KSFramework.TagHelpers
         {
             get
             {
-                if (this._routeValues == null)
-                    this._routeValues = (IDictionary<string, string>)new Dictionary<string, string>((IEqualityComparer<string>)StringComparer.OrdinalIgnoreCase);
-                return this._routeValues;
+                _routeValues ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                return _routeValues;
             }
-            set
-            {
-                this._routeValues = value;
-            }
+            set => _routeValues = value;
         }
 
         /// <summary>
@@ -45,7 +41,7 @@ namespace KSFramework.TagHelpers
         /// </summary>
         [HtmlAttributeNotBound]
         [ViewContext]
-        public ViewContext ViewContext { get; set; }
+        public required ViewContext ViewContext { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -61,15 +57,15 @@ namespace KSFramework.TagHelpers
 
         private bool ShouldBeActive()
         {
-            string currentController = ViewContext.RouteData.Values["Controller"].ToString();
-            string currentAction = ViewContext.RouteData.Values["Action"].ToString();
+            var currentController = ViewContext.RouteData.Values["Controller"]?.ToString() ?? string.Empty;
+            var currentAction = ViewContext.RouteData.Values["Action"]?.ToString() ?? string.Empty;
 
-            if (!string.IsNullOrWhiteSpace(Controller) && Controller.ToLower() != currentController.ToLower())
+            if (!string.IsNullOrWhiteSpace(Controller) && !string.Equals(Controller, currentController, StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(Action) && Action.ToLower() != currentAction.ToLower())
+            if (!string.IsNullOrWhiteSpace(Action) && !string.Equals(Action, currentAction, StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
@@ -94,11 +90,16 @@ namespace KSFramework.TagHelpers
                 classAttr = new TagHelperAttribute("class", ActiveRouteCssClass);
                 output.Attributes.Add(classAttr);
             }
-            else if (classAttr.Value == null || classAttr.Value.ToString().IndexOf(ActiveRouteCssClass) < 0)
+            else
             {
-                output.Attributes.SetAttribute("class", classAttr.Value == null
-                    ? ActiveRouteCssClass
-                    : classAttr.Value.ToString() + " " + ActiveRouteCssClass);
+                var currentClasses = classAttr.Value?.ToString() ?? string.Empty;
+                if (!currentClasses.Contains(ActiveRouteCssClass))
+                {
+                    var newClasses = string.IsNullOrEmpty(currentClasses)
+                        ? ActiveRouteCssClass
+                        : $"{currentClasses} {ActiveRouteCssClass}";
+                    output.Attributes.SetAttribute("class", newClasses);
+                }
             }
         }
     }

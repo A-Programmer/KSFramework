@@ -1,8 +1,8 @@
-using KSFramework.Messaging.Abstraction;
+using KSFramework.KSMessaging.Abstraction;
 
 namespace KSFramework.UnitTests;
 
-using KSFramework.Messaging.Behaviors;
+using KSFramework.KSMessaging.Behaviors;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;

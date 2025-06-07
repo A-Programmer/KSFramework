@@ -1,7 +1,7 @@
 using FluentValidation;
 using FluentValidation.Results;
-using KSFramework.Messaging.Abstraction;
-using KSFramework.Messaging.Behaviors;
+using KSFramework.KSMessaging.Abstraction;
+using KSFramework.KSMessaging.Behaviors;
 using Microsoft.Extensions.Logging;
 using Moq;
 

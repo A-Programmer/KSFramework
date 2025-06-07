@@ -1,6 +1,6 @@
-using KSFramework.Messaging.Abstraction;
-using KSFramework.Messaging.Extensions;
-using KSFramework.Messaging.Samples;
+using KSFramework.KSMessaging.Abstraction;
+using KSFramework.KSMessaging.Extensions;
+using KSFramework.KSMessaging.Samples;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KSFramework.UnitTests.Configuration;
@@ -8,7 +8,7 @@ namespace KSFramework.UnitTests.Configuration;
 public class AddKSMediatorTests
 {
     [Fact]
-    public void AddKSMediator_RegistersHandlersAndBehaviorsFromAssembly()
+    public async Task AddKSMediator_RegistersHandlersAndBehaviorsFromAssembly()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -23,7 +23,7 @@ public class AddKSMediatorTests
         // Assert
         Assert.NotNull(handler);
 
-        var result = handler.Handle(new MultiplyByTwoRequest(5), CancellationToken.None).Result;
+        var result = await handler.Handle(new MultiplyByTwoRequest(5), CancellationToken.None);
         Assert.Equal(10, result);
     }
 }

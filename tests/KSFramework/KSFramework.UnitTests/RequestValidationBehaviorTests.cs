@@ -2,8 +2,8 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
-using KSFramework.Messaging.Behaviors;
-using KSFramework.Messaging.Abstraction;
+using KSFramework.KSMessaging.Behaviors;
+using KSFramework.KSMessaging.Abstraction;
 
 namespace KSFramework.UnitTests
 {
