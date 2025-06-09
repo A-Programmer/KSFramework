@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Project.Common\Project.Common.csproj" />
+    <Folder Include="Contracts\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
+    <ProjectReference Include="..\..\..\src\KSFramework\KSFramework.csproj" />
+    <ProjectReference Include="..\Project.Common\Project.Common.csproj" />
   </ItemGroup>
 
 </Project>

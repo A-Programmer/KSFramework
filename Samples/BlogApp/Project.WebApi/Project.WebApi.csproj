@@ -15,9 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\KSFramework\KSFramework.csproj" />
     <ProjectReference Include="..\Project.Application\Project.Application.csproj" />
     <ProjectReference Include="..\Project.ClientApp\Project.ClientApp.csproj" />
     <ProjectReference Include="..\Project.Common\Project.Common.csproj" />
+    <ProjectReference Include="..\Project.Domain\Project.Domain.csproj" />
     <ProjectReference Include="..\Project.Infrastructure\Project.Infrastructure.csproj" />
     <ProjectReference Include="..\Project.Presentation\Project.Presentation.csproj" />
   </ItemGroup>

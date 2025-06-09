@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\KSFramework\KSFramework.csproj" />
     <ProjectReference Include="..\Project.Common\Project.Common.csproj" />
     <ProjectReference Include="..\Project.Domain\Project.Domain.csproj" />
   </ItemGroup>
