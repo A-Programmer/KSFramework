@@ -26,8 +26,23 @@ public static class RegisterMediatorServices
 
             // Register request handlers
             .AddClasses(c => c.AssignableTo(typeof(IRequestHandler<,>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
+            .AsImplementedInterfaces()
+            .WithScopedLifetime()
+
+            // Register request handlers
+            .AddClasses(c => c.AssignableTo(typeof(IRequest<>)))
+            .AsImplementedInterfaces()
+            .WithScopedLifetime()
+
+            // Register request handlers
+            .AddClasses(c => c.AssignableTo(typeof(ICommand<>)))
+            .AsImplementedInterfaces()
+            .WithScopedLifetime()
+
+            // Register request handlers
+            .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<,>)))
+            .AsImplementedInterfaces()
+            .WithScopedLifetime()
 
             // Register notification handlers
             .AddClasses(c => c.AssignableTo(typeof(INotificationHandler<>)))
