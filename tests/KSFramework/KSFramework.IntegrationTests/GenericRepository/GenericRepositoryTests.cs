@@ -7,7 +7,24 @@ namespace KSFramework.IntegrationTests.GenericRepository;
 
 public class TestEntity : Entity, KSDomain.AggregatesHelper.IAggregateRoot
 {
-    public string Name { get; set; } = string.Empty;
+    private TestEntity(Guid id) : base(id)
+    {
+    }
+
+    private TestEntity(Guid id, string name)
+        :base(id)
+    {
+        Name = name;
+    }
+
+    public static TestEntity Create(Guid id, string name)
+    {
+        TestEntity testEntity = new(id, name);
+        
+        return testEntity;
+    }
+
+    public string Name { get; private set; } = String.Empty;
 }
 
 public class TestDbContext : DbContext
@@ -40,11 +57,7 @@ public class GenericRepositoryTests : IntegrationTestBase
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
         // Arrange
-        var entity = new TestEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = "Test Entity"
-        };
+        var entity = TestEntity.Create(Guid.NewGuid(), "Test Entity");
 
         // Act
         await repository.AddAsync(entity);
@@ -65,11 +78,8 @@ public class GenericRepositoryTests : IntegrationTestBase
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
         // Arrange
-        var entity = new TestEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = "Test Entity"
-        };
+        var entity = TestEntity.Create(Guid.NewGuid(), "Test Entity");
+        
         await dbContext.TestEntities.AddAsync(entity);
         await dbContext.SaveChangesAsync();
 

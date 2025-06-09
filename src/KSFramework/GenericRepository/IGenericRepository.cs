@@ -19,8 +19,9 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// <summary>
     /// Asynchronously retrieves all entities.
     /// </summary>
-    /// <returns>A task representing the asynchronous operation, containing a collection of all entities.</returns>
-    Task<IEnumerable<TEntity>> GetAllAsync();
+    /// <param name="asNoTracking">Whether to track entities in change tracker.</param>
+    /// <returns>A task containing all entities.</returns>
+    Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true);
 
     /// <summary>
     /// Asynchronously retrieves a paginated list of entities with optional filtering and ordering.
@@ -30,11 +31,16 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// <param name="where">Optional filter expression.</param>
     /// <param name="orderBy">Optional property name to order by.</param>
     /// <param name="desc">Indicates if the order should be descending.</param>
-    /// <returns>A task representing the asynchronous operation, containing a paginated list of entities.</returns>
-    Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>>? where = null, string? orderBy = "", bool desc = false);
+    /// <returns>A task containing a paginated list of entities.</returns>
+    Task<PaginatedList<TEntity>> GetPagedAsync(
+        int pageIndex,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? where = null,
+        string? orderBy = "",
+        bool desc = false);
 
     /// <summary>
-    /// Synchronously retrieves a paginated list of entities with optional filtering and ordering.
+    /// Retrieves a paginated list of entities with optional filtering and ordering.
     /// </summary>
     /// <param name="pageIndex">The index of the page (starting from 1).</param>
     /// <param name="pageSize">The number of items per page.</param>
@@ -42,20 +48,26 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// <param name="orderBy">Optional property name to order by.</param>
     /// <param name="desc">Indicates if the order should be descending.</param>
     /// <returns>A paginated list of entities.</returns>
-    PaginatedList<TEntity> GetPaged(int pageIndex, int pageSize, Expression<Func<TEntity, bool>>? where = null, string? orderBy = "", bool desc = false);
+    PaginatedList<TEntity> GetPaged(
+        int pageIndex,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? where = null,
+        string? orderBy = "",
+        bool desc = false);
 
     /// <summary>
     /// Finds entities matching the given predicate.
     /// </summary>
     /// <param name="predicate">The condition to match.</param>
+    /// <param name="asNoTracking">Whether to track entities in change tracker.</param>
     /// <returns>A collection of matching entities.</returns>
-    IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+    IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, bool asNoTracking = true);
 
     /// <summary>
     /// Asynchronously returns a single entity matching the given predicate, or null if none match.
     /// </summary>
     /// <param name="predicate">The condition to match.</param>
-    /// <returns>A task representing the asynchronous operation, containing a single entity or null.</returns>
+    /// <returns>A task containing a single entity or null.</returns>
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
     /// <summary>
@@ -69,6 +81,12 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// </summary>
     /// <param name="entities">The entities to add.</param>
     Task AddRangeAsync(IEnumerable<TEntity> entities);
+
+    /// <summary>
+    /// Updates an existing entity in the repository.
+    /// </summary>
+    /// <param name="entity">The entity to update.</param>
+    void Update(TEntity entity);
 
     /// <summary>
     /// Removes an entity from the repository.
@@ -86,6 +104,6 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// Asynchronously checks whether any entity matches the given predicate.
     /// </summary>
     /// <param name="predicate">The condition to match.</param>
-    /// <returns>A task representing the asynchronous operation, containing true if any entity matches; otherwise, false.</returns>
+    /// <returns>True if any entity matches; otherwise, false.</returns>
     Task<bool> IsExistValueForPropertyAsync(Expression<Func<TEntity, bool>> predicate);
 }
