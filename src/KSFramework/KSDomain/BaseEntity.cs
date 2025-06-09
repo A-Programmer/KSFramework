@@ -12,10 +12,11 @@ public interface IEntity
 /// </summary>
 public abstract class BaseEntity : BaseEntity<Guid>
 {
-    /// <summary>
-    /// Gets or sets the unique identifier for the entity.
-    /// </summary>
-    public override required Guid Id { get; set; } = Guid.NewGuid();
+    protected BaseEntity() {}
+    protected BaseEntity(Guid id)
+    : base(id)
+    {
+    }
 }
 
 /// <summary>
@@ -24,10 +25,15 @@ public abstract class BaseEntity : BaseEntity<Guid>
 /// <typeparam name="TKey">The type of the entity's primary key.</typeparam>
 public abstract class BaseEntity<TKey> : IEntity
 {
+    protected BaseEntity() {}
+    protected BaseEntity(TKey id)
+    {
+        Id = id;
+    }
     /// <summary>
     /// Gets or sets the unique identifier for the entity.
     /// </summary>
-    public virtual required TKey Id { get; set; }
+    public TKey Id { get; set; }
 
     /// <summary>
     /// Gets the version number of the entity for optimistic concurrency.

@@ -28,11 +28,7 @@ public class PerformanceTests : IntegrationTestBase
         const int numberOfEntities = 1000;
         const int acceptableMilliseconds = 2000;
         var entities = Enumerable.Range(1, numberOfEntities)
-            .Select(i => new TestEntity
-            {
-                Id = Guid.NewGuid(),
-                Name = $"Performance Test Entity {i}"
-            })
+            .Select(i => TestEntity.Create(Guid.NewGuid(), $"Performance Test Entity {i}"))
             .ToList();
 
         stopwatch.Start();
@@ -57,11 +53,8 @@ public class PerformanceTests : IntegrationTestBase
 
         const int numberOfQueries = 100;
         const int acceptableMilliseconds = 1000;
-        var entity = new TestEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = "Performance Query Test Entity"
-        };
+        var entity = TestEntity.Create(Guid.NewGuid(), "Performance Query Test Entity");
+        
         await repository.AddAsync(entity);
         await unitOfWork.SaveChangesAsync();
 
@@ -93,11 +86,8 @@ public class PerformanceTests : IntegrationTestBase
                 var scopedRepository = scope.ServiceProvider.GetRequiredService<IGenericRepository<TestEntity>>();
                 var scopedUnitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-                var entity = new TestEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Name = $"Concurrent Test Entity {Guid.NewGuid()}"
-                };
+                var entity = TestEntity.Create(Guid.NewGuid(), $"Concurrent Test Entity {Guid.NewGuid()}");
+
                 await scopedRepository.AddAsync(entity);
                 await scopedUnitOfWork.SaveChangesAsync();
                 await scopedRepository.GetByIdAsync(entity.Id);
