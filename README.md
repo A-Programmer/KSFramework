@@ -1,6 +1,6 @@
 # KSFramework
 
-**KSFramework** is a modular and extensible .NET framework that simplifies the implementation of enterprise-grade applications using **Clean Architecture**, **DDD**, and **CQRS** patterns. It includes built-in support for Generic Repository, Unit of Work, and a custom MediatR-style messaging system.
+**KSFramework** is a modular and extensible .NET framework that simplifies the implementation of enterprise-grade applications using **Clean Architecture**, **DDD**, and **CQRS** patterns. It includes built-in support for Generic Repository, Unit of Work, and a custom MediatR-style messaging system, some useful extension methods, helpers, common Enums, Common Exceptions, Unified API Result, Common Specifications, Pagination Helper, Common Responses, .NET Core Tag Helpers and some Utilities.
 
 ---
 
@@ -32,6 +32,13 @@ dotnet add package KSFramework
 - `KSFramework.KSDomain` — Domain primitives: `Entity`, `AggregateRoot`, `ValueObject`
 - `KSFramework.GenericRepository` — `Repository`, `UnitOfWork`, pagination support
 - `KSFramework.KSMessaging` — CQRS with internal MediatR-style handler resolver, behaviors, stream handling
+- `KSFramework.Enums` - Common Enums
+- `KSFramework.Exceptions` - Common Exceptions
+- `KSFramework.KSApi` - Unified API Result
+- `KSFramework.Pagination` - Pagination Helper
+- `KSFramework.Responses` - Common Responses
+- `KSFramework.TagHelpers` - .NET Core Tag Helpers
+- `KSFramework.Utilities` - Common Utiliti Extension Methods
 
 ---
 
@@ -40,7 +47,7 @@ dotnet add package KSFramework
 ### 🧱 Register Services (Program.cs)
 
 ```csharp
-builder.Services.AddKSMediator(typeof(Program).Assembly);
+builder.Services.AddKSMediator(typeof(Program).Assembly); // Pass the assembly (array of assemblies) that your MediatR Handlers located in, like Application Project
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 ```
 
@@ -160,9 +167,7 @@ public class WeeklyNewsletterJob
 
         foreach (var s in subscribers)
         {
-            await EmailSender.Send(s.Email, "Your Weekly Digest", string.Join("
-
-", posts.Select(p => p.Title)));
+            await EmailSender.Send(s.Email, "Your Weekly Digest", string.Join("\n", posts.Select(p => p.Title)));
         }
     }
 }
@@ -175,17 +180,6 @@ public class WeeklyNewsletterJob
 - Handlers and pipelines are fully testable using unit tests
 - Use `KSFramework.UnitTests` project to validate handler behavior
 - Custom behaviors can be tested independently
-
----
-
-## 📌 Roadmap
-
-- [x] Internal MediatR/CQRS support
-- [x] Pagination
-- [x] Unit of Work abstraction
-- [ ] ValidationBehavior
-- [ ] ExceptionHandlingBehavior
-- [ ] Domain Events integration
 
 ---
 
