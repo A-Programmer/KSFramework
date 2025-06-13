@@ -15,9 +15,8 @@ public static class SecurityHelper
 
     public static string GenerateToken(int byteLength = 32)
     {
-        var randomNumber = new byte[byteLength];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
+        Span<byte> randomNumber = stackalloc byte[byteLength];
+        RandomNumberGenerator.Fill(randomNumber);
         return Convert.ToBase64String(randomNumber);
     }
 }
