@@ -23,7 +23,7 @@ public static class RegisterMediatorServices
         services.AddScoped<ISender>(sp => sp.GetRequiredService<IMediator>());
         
         services.RegisterAllImplementations<IInjectable>(assemblies);
-        services.RegisterAllImplementationsOf<IInjectableAndImplementations>(assemblies);
+        services.RegisterAllImplementationsOf<IInjectableWithImplementation>(assemblies);
 
         services.Scan(scan => scan
             .FromAssemblies(assemblies)
