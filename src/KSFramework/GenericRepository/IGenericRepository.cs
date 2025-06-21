@@ -14,14 +14,14 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// </summary>
     /// <param name="id">The unique identifier of the entity.</param>
     /// <returns>A task representing the asynchronous operation, containing the entity if found; otherwise, null.</returns>
-    ValueTask<TEntity?> GetByIdAsync(object id);
+    ValueTask<TEntity?> GetByIdAsync(object id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously retrieves all entities.
     /// </summary>
     /// <param name="asNoTracking">Whether to track entities in change tracker.</param>
     /// <returns>A task containing all entities.</returns>
-    Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true);
+    Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously retrieves a paginated list of entities with optional filtering and ordering.
@@ -68,19 +68,21 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// </summary>
     /// <param name="predicate">The condition to match.</param>
     /// <returns>A task containing a single entity or null.</returns>
-    Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously adds an entity to the repository.
     /// </summary>
     /// <param name="entity">The entity to add.</param>
-    Task AddAsync(TEntity entity);
+    /// <param name="cancellationToken"></param>
+    Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously adds multiple entities to the repository.
     /// </summary>
     /// <param name="entities">The entities to add.</param>
-    Task AddRangeAsync(IEnumerable<TEntity> entities);
+    /// <param name="cancellationToken"></param>
+    Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing entity in the repository.
@@ -104,6 +106,8 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// Asynchronously checks whether any entity matches the given predicate.
     /// </summary>
     /// <param name="predicate">The condition to match.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>True if any entity matches; otherwise, false.</returns>
-    Task<bool> IsExistValueForPropertyAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<bool> IsExistValueForPropertyAsync(Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken = default);
 }

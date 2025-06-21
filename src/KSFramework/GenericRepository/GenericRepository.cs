@@ -23,20 +23,24 @@ public class GenericRepository<TEntity> : Repository<TEntity>, IGenericRepositor
     /// Gets an entity by its primary key.
     /// </summary>
     /// <param name="id">The entity ID.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>The entity if found; otherwise, null.</returns>
-    public async ValueTask<TEntity?> GetByIdAsync(object id)
+    public async ValueTask<TEntity?> GetByIdAsync(object id,
+        CancellationToken cancellationToken = default)
     {
-        return await DbSet.FindAsync(id);
+        return await DbSet.FindAsync(id, cancellationToken);
     }
 
     /// <summary>
     /// Gets all entities.
     /// </summary>
     /// <param name="asNoTracking">Whether to disable tracking for better performance.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>A list of all entities.</returns>
-    public async Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true)
+    public async Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true,
+        CancellationToken cancellationToken = default)
     {
-        return await AsQueryable(asNoTracking).ToListAsync();
+        return await AsQueryable(asNoTracking).ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -48,7 +52,11 @@ public class GenericRepository<TEntity> : Repository<TEntity>, IGenericRepositor
     /// <param name="orderBy">Property name to order by.</param>
     /// <param name="desc">Order descending if true.</param>
     /// <returns>A paginated list of entities.</returns>
-    public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>>? where = null, string? orderBy = "", bool desc = false)
+    public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? where = null,
+        string? orderBy = "",
+        bool desc = false)
     {
         var query = ApplyWhere(AsQueryable(), where);
         return await PaginatedList<TEntity>.CreateAsync(query, pageIndex, pageSize, where, orderBy, desc);
@@ -84,28 +92,34 @@ public class GenericRepository<TEntity> : Repository<TEntity>, IGenericRepositor
     /// Gets a single entity that matches the given predicate or null.
     /// </summary>
     /// <param name="predicate">The filter expression.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>The matching entity or null.</returns>
-    public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken = default)
     {
-        return await DbSet.SingleOrDefaultAsync(predicate);
+        return await DbSet.SingleOrDefaultAsync(predicate, cancellationToken);
     }
 
     /// <summary>
     /// Adds a new entity asynchronously.
     /// </summary>
     /// <param name="entity">The entity to add.</param>
-    public async Task AddAsync(TEntity entity)
+    /// <param name="cancellationToken"></param>
+    public async Task AddAsync(TEntity entity,
+        CancellationToken cancellationToken = default)
     {
-        await DbSet.AddAsync(entity);
+        await DbSet.AddAsync(entity, cancellationToken);
     }
 
     /// <summary>
     /// Adds a range of entities asynchronously.
     /// </summary>
     /// <param name="entities">The entities to add.</param>
-    public async Task AddRangeAsync(IEnumerable<TEntity> entities)
+    /// <param name="cancellationToken"></param>
+    public async Task AddRangeAsync(IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken = default)
     {
-        await DbSet.AddRangeAsync(entities);
+        await DbSet.AddRangeAsync(entities, cancellationToken);
     }
 
     /// <summary>
@@ -139,9 +153,11 @@ public class GenericRepository<TEntity> : Repository<TEntity>, IGenericRepositor
     /// Determines whether any entity exists that matches the specified predicate.
     /// </summary>
     /// <param name="predicate">The condition to check.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>True if at least one entity exists; otherwise, false.</returns>
-    public async Task<bool> IsExistValueForPropertyAsync(Expression<Func<TEntity, bool>> predicate)
+    public async Task<bool> IsExistValueForPropertyAsync(Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken = default)
     {
-        return await DbSet.AnyAsync(predicate);
+        return await DbSet.AnyAsync(predicate, cancellationToken);
     }
 }
