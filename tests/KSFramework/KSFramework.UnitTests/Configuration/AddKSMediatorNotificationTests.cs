@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace KSFramework.UnitTests.Configuration;
 
 /// <summary>
-/// Tests for verifying notification handlers and behaviors registration through AddKSMediator.
+/// Tests for verifying notification handlers and behaviors registration through AddKSFramework.
 /// </summary>
 public class AddKSMediatorNotificationTests
 {
@@ -51,7 +51,7 @@ public class AddKSMediatorNotificationTests
         // Arrange
         var services = new ServiceCollection();
 
-        services.AddKSMediator(typeof(TestNotification).Assembly);
+        services.AddKSFramework(typeof(TestNotification).Assembly);
         services.AddSingleton<INotificationHandler<TestNotification>, TestNotificationHandler>();
         services.AddSingleton<INotificationBehavior<TestNotification>, TestNotificationBehavior>();
 

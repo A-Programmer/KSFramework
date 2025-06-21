@@ -1,6 +1,7 @@
 using KSFramework.KSMessaging.Abstraction;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using KSFramework.Contracts;
 using KSFramework.KSMessaging.Behaviors;
 
 namespace KSFramework.KSMessaging.Extensions;
@@ -16,12 +17,13 @@ public static class RegisterMediatorServices
     /// <param name="services">The service collection.</param>
     /// <param name="assemblies">The assemblies to scan.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddKSMediator(this IServiceCollection services, params Assembly[] assemblies)
+    public static IServiceCollection AddKSFramework(this IServiceCollection services, params Assembly[] assemblies)
     {
         services.AddScoped<IMediator, Mediator>();
         services.AddScoped<ISender>(sp => sp.GetRequiredService<IMediator>());
         
-        services.RegisterAllImplementationsOf<IRequestDecorator>(assemblies);
+        services.RegisterAllImplementations<IInjectable>(assemblies);
+        services.RegisterAllImplementationsOf<IInjectableAndImplementations>(assemblies);
 
         services.Scan(scan => scan
             .FromAssemblies(assemblies)
@@ -78,7 +80,41 @@ public static class RegisterMediatorServices
         return services;
     }
     
-    public static IServiceCollection RegisterAllImplementationsOf<TInterface>(this IServiceCollection services,
+    private static IServiceCollection RegisterAllImplementationsOf<TInterface>(this IServiceCollection services,
+        Assembly[] assemblies,
+        ServiceLifetime lifetime = ServiceLifetime.Scoped)
+    {
+        var interfaceType = typeof(TInterface);
+
+        foreach (var assembly in assemblies)
+        {
+            var implementations = assembly.DefinedTypes
+                .Where(type => type.IsClass && !type.IsAbstract && interfaceType.IsAssignableFrom(type))
+                .ToList();
+
+            foreach (var implementation in implementations)
+            {
+                switch (lifetime)
+                {
+                    case ServiceLifetime.Transient:
+                        services.AddTransient(interfaceType, implementation);
+                        break;
+                    case ServiceLifetime.Scoped:
+                        services.AddScoped(interfaceType, implementation);
+                        break;
+                    case ServiceLifetime.Singleton:
+                        services.AddSingleton(interfaceType, implementation);
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid service lifetime", nameof(lifetime));
+                }
+            }
+        }
+
+        return services;
+    }
+    
+    private static IServiceCollection RegisterAllImplementations<TInterface>(this IServiceCollection services,
         Assembly[] assemblies,
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
     {

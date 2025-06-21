@@ -11,7 +11,7 @@ services.AddLogging();
 services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 
-services.AddKSMediator(Assembly.GetExecutingAssembly());
+services.AddKSFramework(Assembly.GetExecutingAssembly());
 
 
 var provider = services.BuildServiceProvider();
