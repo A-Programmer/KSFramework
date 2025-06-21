@@ -46,8 +46,8 @@ public static class RegisterMediatorServices
 
             // Register notification handlers
             .AddClasses(c => c.AssignableTo(typeof(INotificationHandler<>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
+            .AsImplementedInterfaces()
+            .WithScopedLifetime()
 
             // Register stream request handlers
             .AddClasses(c => c.AssignableTo(typeof(IStreamRequestHandler<,>)))
@@ -72,7 +72,41 @@ public static class RegisterMediatorServices
 
         // If you have default behaviors (e.g., logging), register them here
         services.AddScoped(typeof(IStreamPipelineBehavior<,>), typeof(StreamLoggingBehavior<,>));
+        
+        services.RegisterAllImplementationsOf<IRequestDecorator>(assemblies);
 
         return services;
+    }
+    
+    private static void RegisterAllImplementationsOf<TInterface>(this IServiceCollection services,
+        Assembly[] assemblies,
+        ServiceLifetime lifetime = ServiceLifetime.Scoped)
+    {
+        var interfaceType = typeof(TInterface);
+
+        foreach (var assembly in assemblies)
+        {
+            var implementations = assembly.DefinedTypes
+                .Where(type => type.IsClass && !type.IsAbstract && interfaceType.IsAssignableFrom(type))
+                .ToList();
+
+            foreach (var implementation in implementations)
+            {
+                switch (lifetime)
+                {
+                    case ServiceLifetime.Transient:
+                        services.AddTransient(interfaceType, implementation);
+                        break;
+                    case ServiceLifetime.Scoped:
+                        services.AddScoped(interfaceType, implementation);
+                        break;
+                    case ServiceLifetime.Singleton:
+                        services.AddSingleton(interfaceType, implementation);
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid service lifetime", nameof(lifetime));
+                }
+            }
+        }
     }
 }
