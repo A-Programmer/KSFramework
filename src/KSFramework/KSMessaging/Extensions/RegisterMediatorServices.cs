@@ -95,13 +95,13 @@ public static class RegisterMediatorServices
                 switch (lifetime)
                 {
                     case ServiceLifetime.Transient:
-                        services.AddTransient(interfaceType, implementation);
+                        services.AddTransient(implementation);
                         break;
                     case ServiceLifetime.Scoped:
-                        services.AddScoped(interfaceType, implementation);
+                        services.AddScoped(implementation);
                         break;
                     case ServiceLifetime.Singleton:
-                        services.AddSingleton(interfaceType, implementation);
+                        services.AddSingleton(implementation);
                         break;
                     default:
                         throw new ArgumentException("Invalid service lifetime", nameof(lifetime));
