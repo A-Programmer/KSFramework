@@ -8,7 +8,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection RegisterApplication(this IServiceCollection services)
     {
-        services.AddKSMediator(Project.Application.AssemblyReference.Assembly);
+        services.AddKSFramework(Project.Application.AssemblyReference.Assembly);
         return services;
     }
 

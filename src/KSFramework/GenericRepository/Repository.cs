@@ -7,7 +7,7 @@ namespace KSFramework.GenericRepository;
 /// Base class for EF Core repositories with reusable query helpers.
 /// </summary>
 /// <typeparam name="TEntity">The entity type.</typeparam>
-public abstract class Repository<TEntity> where TEntity : class
+public class Repository<TEntity> where TEntity : class
 {
     /// <summary>
     /// Gets the EF DbContext instance.
@@ -23,7 +23,7 @@ public abstract class Repository<TEntity> where TEntity : class
     /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
     /// </summary>
     /// <param name="context">The EF DbContext.</param>
-    protected Repository(DbContext context)
+    public Repository(DbContext context)
     {
         Context = context;
         DbSet = context.Set<TEntity>();
