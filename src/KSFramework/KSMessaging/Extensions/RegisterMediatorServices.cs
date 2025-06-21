@@ -20,6 +20,8 @@ public static class RegisterMediatorServices
     {
         services.AddScoped<IMediator, Mediator>();
         services.AddScoped<ISender>(sp => sp.GetRequiredService<IMediator>());
+        
+        services.RegisterAllImplementationsOf<IRequestDecorator>(assemblies);
 
         services.Scan(scan => scan
             .FromAssemblies(assemblies)
@@ -72,8 +74,6 @@ public static class RegisterMediatorServices
 
         // If you have default behaviors (e.g., logging), register them here
         services.AddScoped(typeof(IStreamPipelineBehavior<,>), typeof(StreamLoggingBehavior<,>));
-        
-        services.RegisterAllImplementationsOf<IRequestDecorator>(assemblies);
 
         return services;
     }
