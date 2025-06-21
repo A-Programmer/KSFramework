@@ -78,7 +78,7 @@ public static class RegisterMediatorServices
         return services;
     }
     
-    private static void RegisterAllImplementationsOf<TInterface>(this IServiceCollection services,
+    public static IServiceCollection RegisterAllImplementationsOf<TInterface>(this IServiceCollection services,
         Assembly[] assemblies,
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
     {
@@ -108,5 +108,7 @@ public static class RegisterMediatorServices
                 }
             }
         }
+
+        return services;
     }
 }
