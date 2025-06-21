@@ -41,7 +41,7 @@ public class MediatorTests : IntegrationTestBase
     {
         base.ConfigureServices(services);
 
-        services.AddKSMediator(typeof(MediatorTests).Assembly);
+        services.AddKSFramework(typeof(MediatorTests).Assembly);
     }
 
     [Fact]
