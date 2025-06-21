@@ -1,8 +1,11 @@
 
+using Newtonsoft.Json;
+
 namespace KSFramework.Pagination;
 
-public class SearchRequestOptions
+public record SearchRequestOptions
     : OrderingRequestOptions
 {
-    public string SearchTerm { get; set; } = string.Empty;
+    [property:JsonProperty("searchTerm")]
+    public string SearchTerm { get; set; }
 }
