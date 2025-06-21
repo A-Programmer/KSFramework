@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace KSFramework.UnitTests.Mediator.Registration;
 
 /// <summary>
-/// Unit tests for AddKSMediator service registration.
+/// Unit tests for AddKSFramework service registration.
 /// </summary>
 public class AddKSMediatorRegistrationTests
 {
@@ -54,7 +54,7 @@ public class AddKSMediatorRegistrationTests
     {
         // Arrange
         var services = new ServiceCollection();
-        services.AddKSMediator(typeof(AddKSMediatorRegistrationTests).Assembly);
+        services.AddKSFramework(typeof(AddKSMediatorRegistrationTests).Assembly);
         var provider = services.BuildServiceProvider();
 
         var mediator = provider.GetService<IMediator>();

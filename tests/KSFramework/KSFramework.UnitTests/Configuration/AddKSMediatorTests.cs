@@ -13,7 +13,7 @@ public class AddKSMediatorTests
         // Arrange
         var services = new ServiceCollection();
 
-        services.AddKSMediator(typeof(MultiplyByTwoRequest).Assembly);
+        services.AddKSFramework(typeof(MultiplyByTwoRequest).Assembly);
 
         var provider = services.BuildServiceProvider();
 
