@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace KSFramework.Pagination;
 
-public record OrderingRequestOptions
+public class OrderingRequestOptions
     : PaginationRequestOptions
 {
     [property:JsonProperty("orderByPropertyName")]

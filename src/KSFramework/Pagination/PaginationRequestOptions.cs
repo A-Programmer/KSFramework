@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace KSFramework.Pagination;
 
-public record PaginationRequestOptions
+public class PaginationRequestOptions
 {
     [property:JsonProperty("pageIndex")]
     public int PageIndex { get; set; } = 1;
