@@ -9,10 +9,13 @@ namespace KSFramework.GenericRepository;
 /// <typeparam name="TEntity">The entity type.</typeparam>
 public interface IRepository<TEntity> where TEntity : class
 {
-    Task AddAsync(TEntity entity);
-    Task AddRangeAsync(IEnumerable<TEntity> entities);
+    Task AddAsync(TEntity entity,
+        CancellationToken cancellationToken = default);
+    Task AddRangeAsync(IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken = default);
     IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, bool asNoTracking = true);
-    Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true);
+    Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true,
+        CancellationToken cancellationToken = default);
     Task<PaginatedList<TEntity>> GetPagedAsync(
         int pageIndex,
         int pageSize,
@@ -25,10 +28,13 @@ public interface IRepository<TEntity> where TEntity : class
         Expression<Func<TEntity, bool>>? where = null,
         string? orderBy = "",
         bool desc = false);
-    ValueTask<TEntity?> GetByIdAsync(object id);
+    ValueTask<TEntity?> GetByIdAsync(object id,
+        CancellationToken cancellationToken = default);
     void Remove(TEntity entity);
     void RemoveRange(IEnumerable<TEntity> entities);
-    Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
-    Task<bool> IsExistValueForPropertyAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken = default);
+    Task<bool> IsExistValueForPropertyAsync(Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken = default);
     void Update(TEntity entity);
 }
