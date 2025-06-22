@@ -51,15 +51,17 @@ public class GenericRepository<TEntity> : Repository<TEntity>, IGenericRepositor
     /// <param name="where">Optional filter expression.</param>
     /// <param name="orderBy">Property name to order by.</param>
     /// <param name="desc">Order descending if true.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>A paginated list of entities.</returns>
     public async Task<PaginatedList<TEntity>> GetPagedAsync(int pageIndex,
         int pageSize,
         Expression<Func<TEntity, bool>>? where = null,
         string? orderBy = "",
-        bool desc = false)
+        bool desc = false,
+        CancellationToken cancellationToken = default)
     {
         var query = ApplyWhere(AsQueryable(), where);
-        return await PaginatedList<TEntity>.CreateAsync(query, pageIndex, pageSize, where, orderBy, desc);
+        return await PaginatedList<TEntity>.CreateAsync(query, pageIndex, pageSize, where, orderBy, desc, cancellationToken);
     }
 
     /// <summary>

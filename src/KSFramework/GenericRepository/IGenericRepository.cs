@@ -13,6 +13,7 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// Asynchronously retrieves an entity by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the entity.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>A task representing the asynchronous operation, containing the entity if found; otherwise, null.</returns>
     ValueTask<TEntity?> GetByIdAsync(object id, CancellationToken cancellationToken = default);
 
@@ -20,6 +21,7 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// Asynchronously retrieves all entities.
     /// </summary>
     /// <param name="asNoTracking">Whether to track entities in change tracker.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>A task containing all entities.</returns>
     Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true, CancellationToken cancellationToken = default);
 
@@ -31,13 +33,15 @@ public interface IGenericRepository<TEntity> where TEntity : class
     /// <param name="where">Optional filter expression.</param>
     /// <param name="orderBy">Optional property name to order by.</param>
     /// <param name="desc">Indicates if the order should be descending.</param>
+    /// <param name="cancellationToken"></param>
     /// <returns>A task containing a paginated list of entities.</returns>
     Task<PaginatedList<TEntity>> GetPagedAsync(
         int pageIndex,
         int pageSize,
         Expression<Func<TEntity, bool>>? where = null,
         string? orderBy = "",
-        bool desc = false);
+        bool desc = false,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a paginated list of entities with optional filtering and ordering.
