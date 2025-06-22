@@ -27,7 +27,8 @@ public interface IRepository<TEntity> where TEntity : class
         int pageSize,
         Expression<Func<TEntity, bool>>? where = null,
         string? orderBy = "",
-        bool desc = false);
+        bool desc = false,
+        CancellationToken cancellationToken = default);
     ValueTask<TEntity?> GetByIdAsync(object id,
         CancellationToken cancellationToken = default);
     void Remove(TEntity entity);
