@@ -21,14 +21,14 @@ public interface IRepository<TEntity> where TEntity : class
         int pageSize,
         Expression<Func<TEntity, bool>>? where = null,
         string? orderBy = "",
-        bool desc = false);
+        bool desc = false,
+        CancellationToken cancellationToken = default);
     PaginatedList<TEntity> GetPaged(
         int pageIndex,
         int pageSize,
         Expression<Func<TEntity, bool>>? where = null,
         string? orderBy = "",
-        bool desc = false,
-        CancellationToken cancellationToken = default);
+        bool desc = false);
     ValueTask<TEntity?> GetByIdAsync(object id,
         CancellationToken cancellationToken = default);
     void Remove(TEntity entity);
