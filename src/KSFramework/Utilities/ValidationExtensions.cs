@@ -10,7 +10,7 @@ public static class ValidationExtensions
             return false;
         try
         {
-            MailAddress m = new MailAddress(email);
+            _ = new MailAddress(email);
 
             return true;
         }
@@ -22,7 +22,7 @@ public static class ValidationExtensions
 
     public static bool IsValidMobile(this string phone)
     {
-        return Regex.Match(phone, @"(\+98|0)?9\d{9}").Success;
+        return Regex.IsMatch(phone, @"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}");
     }
 
 }
