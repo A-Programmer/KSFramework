@@ -22,7 +22,7 @@ public static class ValidationExtensions
 
     public static bool IsValidMobile(this string phone)
     {
-        return Regex.IsMatch(phone, @"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}");
+        return Regex.IsMatch(phone, @"^(?:\+?\d{1,3}[.-\s]?)?(?:\(0?\d{1,4}\)|0?\d{1,4})?[.-\s]?\d{1,4}[.-\s]?\d{1,9}$");
     }
 
 }
