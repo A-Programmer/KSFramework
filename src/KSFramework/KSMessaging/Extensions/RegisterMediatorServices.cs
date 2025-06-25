@@ -29,12 +29,12 @@ public static class RegisterMediatorServices
             .FromAssemblies(assemblies)
 
             // Register request handlers
-            .AddClasses(c => c.AssignableTo(typeof(IRequestHandler<,>)))
+            .AddClasses(c => c.AssignableTo(typeof(IRequest<>)))
             .AsImplementedInterfaces()
             .WithScopedLifetime()
 
             // Register request handlers
-            .AddClasses(c => c.AssignableTo(typeof(IRequest<>)))
+            .AddClasses(c => c.AssignableTo(typeof(IRequestHandler<,>)))
             .AsImplementedInterfaces()
             .WithScopedLifetime()
 
