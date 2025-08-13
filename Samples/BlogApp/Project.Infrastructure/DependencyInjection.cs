@@ -1,4 +1,4 @@
-﻿using KSFramework.GenericRepository;
+using KSFramework.GenericRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +18,8 @@ public static class DependencyInjection
                 x =>
                     x.MigrationsAssembly("Project.Infrastructure"));
         });
+
+        services.AddScoped<KSFramework.KSDomain.IDomainEventDispatcher, KSFramework.KSDomain.DomainEventDispatcher>();
         services.AddScoped<DbContext, ApplicationDbContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;

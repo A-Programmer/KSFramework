@@ -4,6 +4,7 @@ using KSFramework.KSDomain.AggregatesHelper;
 using KSFramework.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Project.Domain.Aggregates.Blog.Events;
 
 namespace Project.Domain.Aggregates.Blog;
 
@@ -44,6 +45,7 @@ public class Post : BaseEntity, IAggregateRoot, ISerializable
             Id = Guid.NewGuid(),
         };
         
+        post.AddDomainEvent(new PostCreatedDomainEvent(post.Id, post.Title));
         return post;
     }
 
