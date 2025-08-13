@@ -15,13 +15,13 @@ public sealed class PostCreatedDomainEventHandler : INotificationHandler<PostCre
 
     public Task Handle(PostCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Post created: {PostId} - {Title}", notification.PostId, notification.Title);
-        
+        _logger.LogInformation("Post created:: {PostId} - {Title}", notification.PostId, notification.Title);
+
         // Here you can add additional business logic like:
         // - Sending notifications
         // - Updating read models
         // - Triggering external systems
-        
+
         return Task.CompletedTask;
     }
 }
