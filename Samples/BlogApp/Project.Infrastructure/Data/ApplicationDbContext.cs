@@ -2,14 +2,24 @@ using KSFramework.KSDomain;
 using KSFramework.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Project.Infrastructure.Outbox;
+using Microsoft.Extensions.DependencyInjection;
+using Project.Infrastructure.Services;
+using System.Linq;
 
 namespace Project.Infrastructure.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        :base(options)
+    private readonly IDomainEventDispatcher _dispatcher;
+    private readonly IServiceProvider _serviceProvider;
+
+    public ApplicationDbContext(
+        DbContextOptions<ApplicationDbContext> options,
+        IServiceProvider serviceProvider)
+        : base(options)
     {
+        _serviceProvider = serviceProvider;
+        _dispatcher = _serviceProvider.GetRequiredService<IDomainEventDispatcher>();
     }
 
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
@@ -47,5 +57,27 @@ public class ApplicationDbContext : DbContext
         // modelBuilder.Seed();
 
         #endregion
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var domainEvents = ChangeTracker.Entries<BaseEntity>()
+            .SelectMany(x => x.Entity.DomainEvents)
+            .ToList();
+
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        if (domainEvents.Any())
+        {
+            await _dispatcher.DispatchEventsAsync(domainEvents, cancellationToken);
+
+            // Clear domain events after dispatching
+            foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+            {
+                entry.Entity.ClearDomainEvents();
+            }
+        }
+
+        return result;
     }
 }
