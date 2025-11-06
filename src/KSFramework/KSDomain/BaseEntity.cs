@@ -5,7 +5,7 @@ namespace KSFramework.KSDomain;
 /// </summary>
 public interface IEntity
 {
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? CreatedAt { get; set; }
     public DateTimeOffset? ModifiedAt { get; set; }
     public string? CreatedBy { get; set; }
     public string? ModifiedBy { get; set; }
@@ -67,7 +67,7 @@ public abstract class BaseEntity<TKey> : IEntity
         _domainEvents?.Clear();
     }
 
-    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset? CreatedAt { get; set; } = DateTimeOffset.Now;
     public DateTimeOffset? ModifiedAt { get; set; }
     public string CreatedBy { get; set; }
     public string? ModifiedBy { get; set; }
