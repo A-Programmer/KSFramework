@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using KSFramework.KSDomain.AggregatesHelper;
+using KSFramework.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace KSFramework.GenericRepository;
 
@@ -22,14 +25,32 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         _repositories = new Dictionary<Type, object>();
     }
+    public virtual int SaveChanges()
+    {
+        return _context.SaveChanges();
+    }
+
+    public virtual int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        return _context.SaveChanges(acceptAllChangesOnSuccess);
+    }
 
     /// <summary>
     /// Saves all changes made in this unit of work to the underlying data store asynchronously.
     /// </summary>
     /// <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
-    public async Task<int> SaveChangesAsync()
+    public virtual Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
-        return await _context.SaveChangesAsync();
+        return _context.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+    
+    /// <summary>
+    /// Saves all changes made in this unit of work to the underlying data store asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
+    public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return _context.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>

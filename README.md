@@ -183,6 +183,14 @@ public class WeeklyNewsletterJob
 
 ---
 
+## How to push new version
+1. Implement changes
+2. Add and Commit changes in git
+3. Tag the changes `git tag vX.Y.Z`
+4. Push the changes `git push`
+5. Create Pull Request and merge changes
+6. Push the tag `git push origin vX.Y.Z`
+
 ## 📄 License
 
 Licensed under MIT.
