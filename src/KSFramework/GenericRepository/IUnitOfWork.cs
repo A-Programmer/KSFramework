@@ -18,10 +18,10 @@ public interface IUnitOfWork : IDisposable
     Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
         CancellationToken cancellationToken = default);
     
-    /// <inheritdoc cref="SaveChanges"/>
+    /// <inheritdoc cref="SaveChanges(bool)"/>
     int SaveChanges(bool acceptAllChangesOnSuccess);
     
-    /// <inheritdoc cref="SaveChanges"/>
+    /// <inheritdoc cref="SaveChanges()"/>
     int SaveChanges();
 
     /// <summary>
