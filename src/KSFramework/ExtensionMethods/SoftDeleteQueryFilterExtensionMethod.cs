@@ -14,6 +14,7 @@ public static class SoftDeleteQueryFilterExtensionMethod
                 .FirstOrDefault(p => string.Equals(p.Name, "IsDeleted", StringComparison.OrdinalIgnoreCase));
             if (isDeletedProperty != null)
             {
+                modelBuilder.Entity(entitytype.ClrType).HasIndex("IsDeleted");
                 var parameter = Expression.Parameter(types);
                 var property = Expression.Property(parameter, isDeletedProperty);
                 var noDeleted = Expression.Not(property);

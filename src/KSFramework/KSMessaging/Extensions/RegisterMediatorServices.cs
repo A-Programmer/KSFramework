@@ -24,54 +24,68 @@ public static class RegisterMediatorServices
         
         services.RegisterAllImplementations<IInjectable>(assemblies);
         services.RegisterAllImplementationsOf<IInjectableWithImplementation>(assemblies);
-
+        
         services.Scan(scan => scan
             .FromAssemblies(assemblies)
-
-            // Register request handlers
-            .AddClasses(c => c.AssignableTo(typeof(IRequest<>)))
+            .AddClasses(c => c.AssignableToAny(
+                typeof(IRequestHandler<,>),
+                typeof(ICommandHandler<,>),
+                typeof(INotificationHandler<>),
+                typeof(IStreamRequestHandler<,>),
+                typeof(IPipelineBehavior<,>),
+                typeof(INotificationBehavior<>),
+                typeof(IStreamPipelineBehavior<,>)
+            ))
             .AsImplementedInterfaces()
             .WithScopedLifetime()
 
-            // Register request handlers
-            .AddClasses(c => c.AssignableTo(typeof(IRequestHandler<,>)))
-            .AsImplementedInterfaces()
-            .WithScopedLifetime()
-
-            // Register request handlers
-            .AddClasses(c => c.AssignableTo(typeof(ICommand<>)))
-            .AsImplementedInterfaces()
-            .WithScopedLifetime()
-
-            // Register request handlers
-            .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<,>)))
-            .AsImplementedInterfaces()
-            .WithScopedLifetime()
-
-            // Register notification handlers
-            .AddClasses(c => c.AssignableTo(typeof(INotificationHandler<>)))
-            .AsImplementedInterfaces()
-            .WithScopedLifetime()
-
-            // Register stream request handlers
-            .AddClasses(c => c.AssignableTo(typeof(IStreamRequestHandler<,>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-
-            // Register pipeline behaviors
-            .AddClasses(c => c.AssignableTo(typeof(IPipelineBehavior<,>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-
-            // Register notification behaviors
-            .AddClasses(c => c.AssignableTo(typeof(INotificationBehavior<>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
-
-            // Register stream pipeline behaviors ✅
-            .AddClasses(c => c.AssignableTo(typeof(IStreamPipelineBehavior<,>)))
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
+        // services.Scan(scan => scan
+        //     .FromAssemblies(assemblies)
+        //
+        //     // // Register requests
+        //     // .AddClasses(c => c.AssignableTo(typeof(IRequest<>)))
+        //     // .AsImplementedInterfaces()
+        //     // .WithScopedLifetime()
+        //
+        //     // Register request handlers
+        //     .AddClasses(c => c.AssignableTo(typeof(IRequestHandler<,>)))
+        //     .AsImplementedInterfaces()
+        //     .WithScopedLifetime()
+        //
+        //     // // Register commands
+        //     // .AddClasses(c => c.AssignableTo(typeof(ICommand<>)))
+        //     // .AsImplementedInterfaces()
+        //     // .WithScopedLifetime()
+        //
+        //     // Register request handlers
+        //     .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<,>)))
+        //     .AsImplementedInterfaces()
+        //     .WithScopedLifetime()
+        //
+        //     // Register notification handlers
+        //     .AddClasses(c => c.AssignableTo(typeof(INotificationHandler<>)))
+        //     .AsImplementedInterfaces()
+        //     .WithScopedLifetime()
+        //
+        //     // Register stream request handlers
+        //     .AddClasses(c => c.AssignableTo(typeof(IStreamRequestHandler<,>)))
+        //         .AsImplementedInterfaces()
+        //         .WithScopedLifetime()
+        //
+        //     // Register pipeline behaviors
+        //     .AddClasses(c => c.AssignableTo(typeof(IPipelineBehavior<,>)))
+        //         .AsImplementedInterfaces()
+        //         .WithScopedLifetime()
+        //
+        //     // Register notification behaviors
+        //     .AddClasses(c => c.AssignableTo(typeof(INotificationBehavior<>)))
+        //         .AsImplementedInterfaces()
+        //         .WithScopedLifetime()
+        //
+        //     // Register stream pipeline behaviors ✅
+        //     .AddClasses(c => c.AssignableTo(typeof(IStreamPipelineBehavior<,>)))
+        //         .AsImplementedInterfaces()
+        //         .WithScopedLifetime()
         );
 
         // If you have default behaviors (e.g., logging), register them here
@@ -92,6 +106,8 @@ public static class RegisterMediatorServices
                 .Where(type => type.IsClass && !type.IsAbstract && interfaceType.IsAssignableFrom(type))
                 .ToList();
 
+            implementations = implementations.DistinctBy(t => t.FullName).ToList();
+            
             foreach (var implementation in implementations)
             {
                 switch (lifetime)
