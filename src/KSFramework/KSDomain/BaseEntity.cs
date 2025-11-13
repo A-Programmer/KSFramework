@@ -42,7 +42,7 @@ public abstract class BaseEntity<TKey> : IEntity
     /// <summary>
     /// Gets the version number of the entity for optimistic concurrency.
     /// </summary>
-    public int Version { get; private set; } = 0;
+    public byte[] Version { get; private set; }
 
     private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
@@ -57,17 +57,12 @@ public abstract class BaseEntity<TKey> : IEntity
         _domainEvents.Add(domainEvent);
     }
 
-    protected void IncreaseVersion()
-    {
-        Version++;
-    }
-
     public void ClearDomainEvents()
     {
         _domainEvents?.Clear();
     }
 
-    public DateTime? CreatedAt { get; set; } = DateTime.Now;
+    public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? ModifiedAt { get; set; }
     public string CreatedBy { get; set; }
     public string? ModifiedBy { get; set; }
