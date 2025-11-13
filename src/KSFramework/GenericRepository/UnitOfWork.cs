@@ -25,12 +25,12 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         _repositories = new Dictionary<Type, object>();
     }
-    public virtual int SaveChanges()
+    public int SaveChanges()
     {
         return _context.SaveChanges();
     }
 
-    public virtual int SaveChanges(bool acceptAllChangesOnSuccess)
+    public int SaveChanges(bool acceptAllChangesOnSuccess)
     {
         return _context.SaveChanges(acceptAllChangesOnSuccess);
     }
@@ -39,7 +39,7 @@ public class UnitOfWork : IUnitOfWork
     /// Saves all changes made in this unit of work to the underlying data store asynchronously.
     /// </summary>
     /// <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
-    public virtual Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    public Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         return _context.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
@@ -48,7 +48,7 @@ public class UnitOfWork : IUnitOfWork
     /// Saves all changes made in this unit of work to the underlying data store asynchronously.
     /// </summary>
     /// <returns>A task that represents the asynchronous save operation. The task result contains the number of state entries written to the database.</returns>
-    public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return _context.SaveChangesAsync(cancellationToken);
     }
