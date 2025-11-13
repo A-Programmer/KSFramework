@@ -44,6 +44,11 @@ public abstract class BaseEntity<TKey> : IEntity
     /// </summary>
     public uint Version { get; private set; }
 
+    public void IncreaseVersion()
+    {
+        Version++;
+    }
+
     private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
     /// <summary>
