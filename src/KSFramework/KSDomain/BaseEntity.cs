@@ -42,7 +42,7 @@ public abstract class BaseEntity<TKey> : IEntity
     /// <summary>
     /// Gets the version number of the entity for optimistic concurrency.
     /// </summary>
-    public byte[] Version { get; private set; }
+    public byte[] Version { get; private set; } = Array.Empty<byte>();
 
     private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
