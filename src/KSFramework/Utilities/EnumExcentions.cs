@@ -59,7 +59,7 @@ public static class EnumExtensions
         return dict;
     }
 
-    public static Dictionary<int, string> ToDictionary<TEnum>() where TEnum : Enum
+    public static Dictionary<int, string> ToDescriptionsDictionary<TEnum>() where TEnum : Enum
     {
         return Enum.GetValues(typeof(TEnum))
             .Cast<TEnum>()
